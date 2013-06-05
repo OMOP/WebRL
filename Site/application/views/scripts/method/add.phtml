@@ -1,0 +1,57 @@
+<?php $this->headScript()->appendFile('/js/jquery.populate.js')?>
+<?php $this->headScript()->captureStart()?>
+function toggleOrgs() {
+    if ($('#access').is(':checked'))
+        $('#div-orgs').css('opacity', '0');
+    else
+        $('#div-orgs').css('opacity', '1');
+}
+
+function copy_from() {
+    $.ajax({
+        async: false,
+        cache: false,
+        type: "POST",
+        url: '<?php echo $this->url(array('action' => 'get'))?>',
+        data:  {id : $('#copy').val()},
+        success: function(response){
+            if (typeof response['copy_from'] != undefined) {
+                $('.form2').populate(response['copy_from']);
+                if (typeof response['copy_from'].organizations == 'undefined' || response['copy_from'].organizations.length == 0) {
+                    $('#access[type="checkbox"]').attr('checked', 'checked');
+                }
+                else
+                    $('#access[type="checkbox"]').removeAttr('checked');
+                toggleOrgs();
+            }
+        },
+        dataType: 'json'
+
+    });
+}
+
+$(document).ready(function() {
+    toggleOrgs();
+    $('#access').change(toggleOrgs);
+    $('input[name^=param]').change(function () {
+        if ($(this).val() == '')
+            $(this).val('-');
+    });
+});
+<?php $this->headScript()->captureEnd()?>
+
+
+<div class="invisible_block invisible_block_3columns">
+<div id="method_copy">
+<span>Copy parameters from method:</span>
+<select id="copy" name="copy_from_method">
+<?php foreach ($this->methods as $id => $abbr):?>
+    <option value="<?php echo $id?>"><?php echo $abbr?></option>
+<?php endforeach?>
+</select>
+<button type="button" onmouseover="this.style.backgroundPosition='bottom';" onmouseout="this.style.backgroundPosition='top';" class="button_90" onclick="copy_from()">Copy</button>
+</div>
+
+<?php $this->form->setAction($this->url()) ?>
+<?php echo $this->form ?>
+</div>

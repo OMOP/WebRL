@@ -1,0 +1,76 @@
+<?php $this->headScript()->appendFile('/js/jquery-ui-1.7.3.custom.min.js')?>
+<?php $this->headScript()->appendFile('/js/system_instances.js')?>
+<?php $this->headLink()->appendStylesheet('/css/jquery/smoothness/jquery-ui-1.7.3.custom.css');?>
+
+<div class="list">
+    <?php echo $this->partial('_round_corners.phtml')?>
+    <table cellspacing="0" cellpadding="0" border="0">
+	<thead>
+	<tr>
+        <?php
+            $columns = array(
+               array('column_name' => 'Name'),
+               array('column_name' => 'Connect', 'sortable' => false),
+               array('column_name' => 'Host'),
+               array('column_name' => 'Key Name'),
+               array('column_name' => 'Instance Type'),
+               array('column_name' => 'OS Family'),
+               array('column_name' => 'Launch Date'),
+               array('column_name' => 'Register Date'),
+               array('column_name' => 'End Date')
+            );
+            echo $this->partialLoop('_column_header.phtml', $columns);
+        ?>
+	</tr>
+	</thead>
+	<tfoot>
+        <tr>
+            <th colspan="9">
+                <?php echo $this->paginator ?>
+            </th>
+        </tr>
+        <tr>
+	    <th colspan="9">
+	    <input onmouseover="this.style.backgroundPosition='bottom';" onmouseout="this.style.backgroundPosition='top';"
+            id="button_new_dataset" class="button_105"
+            type="button" value="Add Instance" onclick="window.location='<?php echo $this->url(array('action' => 'add'))?>'" />
+            </th>
+        </tr>
+	</tfoot>
+    <?php $user = Membership::get_current_user();?>
+    <tbody>
+        <?php foreach($this->paginator as $entry): ?>
+        <tr>
+			<td><a href="<?php echo $this->url(array('action' => 'edit', 'id' => $entry['id']))?>"><?php echo $this->escape($entry['name'])?></a></td>
+			<td>
+            <?php if (!$entry['endDate']):?>
+			<?php if (preg_match('/Windows/i', $_SERVER['HTTP_USER_AGENT'])) {
+                $sshTitle = "PuTTY";
+            }
+			else {
+                $sshTitle = "SSH";
+            }
+			?>
+            <a href="#" title="<?php echo $sshTitle?> connect to <?php echo $this->escape($entry['name'])?>"><img src="/images/putty.jpg" alt="Connect" onclick="show_key_dialog('omop://4cf917a05841c-<?php echo $user->internal_id?>@<?php echo $_SERVER['HTTP_HOST'].'/'.$this->escape($entry['name'])?>')"/></a>
+			<?php if (! preg_match('/Mac/i', $_SERVER['HTTP_USER_AGENT'])): ?>
+			<a href="#" title="WinSCP connect to <?php echo $this->escape($entry['name'])?>"><img src="/images/WinSCP.png" alt="Transfer files" onclick="show_key_dialog('omopf://4cf917a05841c-<?php echo $user->internal_id?>@<?php echo $_SERVER['HTTP_HOST'].'/'.$this->escape($entry['name'])?>')"/></a>
+			<?php endif?>
+            <?php endif?>
+            </td>
+			<td><?php echo $this->escape($entry['host'])?></td>
+			<td><?php echo $this->escape($entry['keyName'])?></td>
+			<td><?php echo $this->escape($entry['instanceType'])?></td>
+			<td><?php echo ucfirst($this->escape($entry['osFamily']))?></td>
+			<td><?php echo $this->dateFormat($this->escape($entry['launchDate']))?></td>
+			<td><?php echo $this->dateFormat($this->escape($entry['registerDate']))?></td>
+			<td><?php echo $this->dateFormat($this->escape($entry['endDate']))?></td>
+        </tr>
+		<? endforeach ?>
+	</tbody>
+    </table>
+</div>
+
+<div id="key_dialog" style="display:none">
+<label for="key_file">Enter a path for certificate:</label>
+<input type="text" id="key_file"/>
+</div>

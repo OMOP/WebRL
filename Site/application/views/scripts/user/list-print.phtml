@@ -1,0 +1,39 @@
+<div class="list">
+    <table cellspacing="0" cellpadding="0" border="0">
+	<thead>
+	<tr>
+        <?php
+            $columns = array(
+               array('column_name' => 'Login ID'),
+               array('column_name' => 'Organization'),
+               array('column_name' => 'User Name'),
+               array('column_name' => 'Email'),
+               array('column_name' => 'Active'),
+               array('column_name' => 'Active Instances'),
+               array('column_name' => 'Last Instances Started'),
+               array('column_name' => 'Last Instances Ended'),
+               array('column_name' => 'Charged ($)'),
+               array('column_name' => 'Remaining ($)'),
+            );
+            echo $this->partialLoop('_column_header.phtml', $columns);
+        ?>
+	</tr>
+	</thead>
+    <tbody>
+        <?php foreach($this->data as $entry): ?>
+        <tr>
+            <td><a href="<?php echo $this->url(array('action' => 'edit', 'id' => $entry['id']))?>"><?php echo $this->escape($entry['login'])?></a></td>
+            <td><a href="/index.php?page=edit_organization&action=<?php echo $this->escape($entry['organization_id'])?>"><?php echo $this->escape($entry['organization'])?></a></td>
+            <td><?php echo $this->escape($entry['name'])?></td>
+            <td><a href="mailto:<?php echo $this->escape($entry['email'])?>"><?php echo $this->escape($entry['email'])?></a></td>
+            <td><?php if ($entry['active'] == 'Y') echo 'Yes'; else echo 'No'?></td>
+            <td class="right"><a href="<?php echo $this->url(array('controller' => 'user', 'action' => 'history', 'filter' => $this->currentUser->organization_id.'_'.$entry['id']), 'default', true)?>"><?php echo $this->escape($entry['runningInstCount'])?></a></td>
+            <td><?php echo $this->dateFormat($this->escape($entry['lastInstanceStart']))?></td>
+            <td><?php echo $this->dateFormat($this->escape($entry['lastInstanceTerminate']))?></td>
+            <td class="right"><?php echo number_format($this->escape($entry['totalCharged']))?></td>
+            <td class="right"><?php echo number_format($this->escape($entry['remainingLimit']))?></td>
+        </tr>
+		<? endforeach ?>
+	</tbody>
+    </table>
+</div>

@@ -1,0 +1,87 @@
+<?php
+/*================================================================================
+    OMOP - Cloud Research Lab
+
+    Observational Medical Outcomes Partnership
+    24 Jan 2011
+
+    Contains view template for displaying the Run Results uploading logs
+
+    (C)2009-2011 Foundation for the National Institutes of Health (FNIH)
+
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not
+    use this file except in compliance with the License. You may obtain a copy
+    of the License at http://omop.fnih.org/publiclicense.
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. Any
+    redistributions of this work or any derivative work or modification based on
+    this work should be accompanied by the following source attribution: "This
+    work is based on work by the Observational Medical Outcomes Partnership
+    (OMOP) and used under license from the FNIH at
+    http://omop.fnih.org/publiclicense.
+
+    Any scientific publication that is based on this work should include a
+    reference to http://omop.fnih.org.
+
+================================================================================*/
+?>
+<tr>
+    <td><strong><?=$this->dataset;?></strong></td>
+    <?php foreach($this->methods as $method): ?>
+    <?php
+    $data = $this->data[$method];
+    
+    $runSet = $data[$this->dataset];
+    
+    $hasResults = $runSet['s3_files_count'] != 0; 
+    switch ($method) {
+        case 'OSCAR':
+            $cssClass = '';
+            break;
+
+        default:
+            $cssClass = $hasResults ? ' class="run-data"' : '';
+            break;
+    }
+    $title = $hasResults ? ' title="' . $this->dataset.'/'.$method . '"': '';
+    ?>
+    <td <?=$title;?><?=$cssClass;?>>
+    <?php
+    if ($hasResults) {
+        $mostRecent = null;
+        $hasNotUploaded = false;
+
+        // Display table cell for OSCAR method
+        
+        $mostRecent = $runSet['last_modified'];
+        if ('OSCAR' == $method) {
+            $hasNotUploaded = false;
+            
+            $mostRecent = strftime($this->timeFormat, $mostRecent);
+            $link_class = ' class="table-link"';
+            
+            $html = '<span '.$link_class.'>';
+            $html .= $mostRecent ? $mostRecent : $this->emptyDate;
+            $html .= '</span>';
+            echo $html;
+        } else {
+            // Display table cell for common method
+            $hasNotUploaded = $runSet['oracle_files_count'] > $runSet['s3_files_count'];
+
+            $link_class = $hasNotUploaded ? ' class="not-uploaded"' : ' class="table-link"';
+            $mostRecent = $mostRecent ? strftime($this->timeFormat, $mostRecent) : $this->emptyDate;
+
+            $html  = '<a ' . $link_class . ' href="javascript:void(0);"';
+            $html .= ' title="' . $this->dataset . '/' . $method . '">';
+            $html .= $mostRecent . '</a>';
+            echo $html;
+        }
+    } else {
+        echo "&nbsp;";
+    }
+    ?>
+    </td>
+    <?php endforeach; ?>
+</tr>

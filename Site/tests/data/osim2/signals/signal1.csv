@@ -1,0 +1,2 @@
+risk_or_benefit,drug_concept_id,condition_concept_id,relative_risk,outcome_risk_type,outcome_onset_days_min,outcome_onset_days_max|
+risk,19027475,4059190,0.2,first exposure,10,30

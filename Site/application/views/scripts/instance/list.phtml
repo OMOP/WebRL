@@ -1,0 +1,141 @@
+<?php echo $this->partial('_javascript_autoload.phtml', array('page' => 'instances'))?>
+<?php $this->headScript()->appendFile('/js/jquery-ui-1.7.3.custom.min.js')?>
+<?php $this->headScript()->appendFile('/js/system_instances.js')?>
+<?php $this->headScript()->appendFile('/js/jquery.timers.js')?>
+<?php
+    if ( Membership::get_app_mode() == ApplicationMode::User)
+        $this->headScript()->appendFile('/js/instancelist-updatename.js')
+?>
+<?php $this->headLink()->appendStylesheet('/css/jquery/smoothness/jquery-ui-1.7.3.custom.css');?>
+
+<div class="list">
+    <?php echo $this->partial('_round_corners.phtml')?>
+    <table cellspacing="0" cellpadding="0" border="0">
+	<thead>
+	<tr>
+        <?php
+        if ($this->adminMode) {
+            $columns = array(
+               array('column_name' => 'Name'),
+               array('column_name' => 'Host'),
+               array('column_name' => 'ID'),
+               array('column_name' => 'Login ID'),
+               array('column_name' => 'Start Date'),
+               array('column_name' => 'Instance Type'),
+               array('column_name' => 'Dataset'),
+               array('column_name' => 'Image'),
+               array('column_name' => 'Actions', 'sortable' => false)
+            );
+        } else {
+            $columns = array(
+               array('column_name' => 'Name'),
+               array('column_name' => 'Connect', 'sortable' => false),
+               array('column_name' => 'Host'),
+               array('column_name' => 'Start Date'),
+               array('column_name' => 'Instance Type'),
+               array('column_name' => 'Dataset'),
+               array('column_name' => 'Image'),
+               array('column_name' => 'Actions', 'sortable' => false)
+            );
+        }
+        echo $this->partialLoop('_column_header.phtml', $columns);
+        ?>
+	</tr>
+	</thead>
+	<tfoot>
+        <tr>
+            <th colspan="<?=$this->adminMode?'9':'8'?>">
+                <?php echo $this->paginator ?>
+            </th>
+        </tr>
+	</tfoot>
+    <?php $user = Membership::get_current_user();?>
+    <tbody>
+        <?php foreach($this->paginator as $entry): ?>
+        <tr <?php echo !$entry['host'] ? 'class="booting"' : ''; ?> id="instance_row_<?=$entry['id']?>">
+            <td>
+                <?php
+                    $length = strlen($this->escape($entry['name']));
+                ?>
+                <?php if ( Membership::get_app_mode() == 1  ): ?>
+                    <?php
+                        if ($length > 30)
+                            $classes = 'class="tooltip_handle"';
+                        else
+                            $classes = '';
+                    ?>
+                    <a <?=$classes?> style="color:#000 !important;text-decoration:none"><name><?php echo $this->truncate($this->escape($entry['name']), 30)?></name><span class="tooltip" <?=(!$classes)?'style="display: none;"':''?>><name><?php echo $this->escape($entry['name'])?></name><br /></span></a>
+                <?php else:?>
+                    <?php
+                        if ($length > 30)
+                            $classes = 'tooltip_handle instance-name';
+                        else
+                            $classes = 'instance-name';
+                    ?>
+                    <a id="<?=$entry['id']?>" class="<?=$classes?>" href="#"><name><?php echo $this->truncate($this->escape($entry['name']), 30)?></name><span class="tooltip"><name><?php echo $this->escape($entry['name'])?></name><br /></span></a>
+                <?php endif;?>
+            </td>
+
+            <?php if (!$this->adminMode): ?>
+            <td>
+                <?php if (preg_match('/Windows/i', $_SERVER['HTTP_USER_AGENT'])) : ?>
+                    <?php $sshTitle = "PuTTY"; ?>
+                    <?php $xTitle = "XWindows"; ?>
+                <?php else: ?>
+                    <?php $sshTitle = "SSH"; ?>
+                    <?php $xTitle = "SSH (with X11 forwarding)"; ?>
+                <?php endif; ?>
+                <?php if ($entry['status'] == 'A') : ?>
+                    <?php $link = $entry['ownerInternalId'] . '@' . $_SERVER['HTTP_HOST'] . '/' . $entry['name']; ?>
+                    <a href="omop://<?=$link?>" title="<?=$sshTitle?> connect to <?=$entry['name']?>"><img src="/images/putty.jpg" alt="Connect" /></a>
+                    <?php if (!preg_match('/Mac/i', $_SERVER['HTTP_USER_AGENT'])) : ?>
+                        <a href="omopf://<?=$link?>" title="WinSCP connect to <?=$entry['name']?>"><img src="/images/WinSCP.png" alt="Transfer files" /></a>
+                    <?php endif; ?>
+                    <a href="omopx://<?=$link?>" title="<?=$xTitle?> connect to <?=$entry['name']?>"><img src="/images/xming.jpg" alt="X-Window session" /></a>
+                <?php else: ?>
+                    <span style="min-width: 54px; float: right;">&nbsp;</span>
+                <?php endif; ?>
+            </td>
+            <?php endif; ?>
+
+            <td>
+                <?php echo $this->escape($entry['host']) ? $this->escape($entry['host']) : ($entry['status'] == 'X' ? 'Instance is preparing' : 'Instance is booting')?>
+            </td>
+
+            <?php if ($this->adminMode): ?>
+            <td>
+                <?php echo $this->escape($entry['amazonId'])?>
+            </td>
+            <td>
+                <a href="<?php echo $this->url(array('controller' => 'user', 'action' => 'edit', 'id' => $entry['ownerId']))?>"><?php echo $this->escape($entry['ownerLogin'])?></a>
+            </td>
+            <?php endif; ?>
+
+            <td>
+                <?php echo $this->dateFormat($this->escape($entry['startDate']))?>
+            </td>
+            <td>
+                <?php echo $this->escape($entry['instanceType'])?>
+            </td>
+            <td>
+                <?php if (false):?>
+                <a class="tooltip_handle" href="#" onclick="return false;"><?php echo $this->truncate($this->escape($entry['datasetTypes']))?><span class="tooltip"><?php echo $this->escape($entry['datasetTypes'])?></span></a>
+                <?php endif;?>
+                <?php if (strlen($entry['datasetTypes']) > 15): ?>
+                    <a class="tooltip_handle_datasets" href="#" onclick="return false;"><?php echo $this->truncate($this->escape($entry['datasetTypes']),20)?><span class="tooltip"><?php echo $this->escape($entry['datasetTypes'])?></span></a>
+                <?php else: ?>
+                    <a class="tooltip_handle_datasets" href="#" onclick="return false;"><?=$this->escape($entry['datasetTypes'])?></a>
+                <?php endif;?>
+            </td>
+            <td>
+                <?php echo $this->escape($entry['softwareType'])?>
+            </td>
+            <td class="center">
+            <a href="<?php echo $this->url(array('action' => 'terminate', 'id' => $entry['id'], 'page'=>$this->page, 'sort'=>$this->sort_column, 'dir'=>$this->sort_dir))?>" 
+            onclick="javascript:return confirm('Termination requested for instance <?php echo $entry['name']?>.\r\n\r\nTerminating the instance will result in the loss of all data stored on the instance drive.\r\nPress CANCEL if you want to download or backup data prior to terminating the instance.')" title="Terminate Instance"><img src="/images/trash.gif" alt="Terminate" /></a>
+            </td>
+        </tr>
+		<? endforeach ?>
+	</tbody>
+    </table>
+</div>

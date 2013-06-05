@@ -1,0 +1,22 @@
+<th><nobr>
+    <?php $id = isset($this->id) ? $this->id : $this->partialCounter; ?>
+    <?php if (false === $this->sortable):?>
+        <?=$this->column_name?>&nbsp;
+    <?php elseif ($this->partialLoop()->view->sort_column == $id):?>
+        <?php if ($this->partialLoop()->view->sort_dir == 'desc'):?>
+        <a href="<?php echo $this->url(array('dir' => 'asc', 'sort' => $id))?>" title="">
+            <?=$this->column_name?>&nbsp;
+            <img src="/images/sort_top.gif" width="7" height="4" alt="" />
+        </a>
+        <?php else: ?>
+        <a href="<?php echo $this->url(array('dir' => 'desc', 'sort' => $id))?>" title="">
+            <?=$this->column_name?>&nbsp;
+            <img src="/images/sort_bottom.gif" width="7" height="4" alt="" />
+        </a>
+        <?php endif ?>
+    <?php else: ?>
+        <a href="<?=$this->url(array('dir' => 'asc', 'sort' => $id))?>" title="">
+            <?=$this->column_name?>
+        </a>
+    <?php endif ?>
+</nobr></th>

@@ -1,0 +1,359 @@
+<?php 
+/*================================================================================
+    OMOP - Cloud Research Lab
+ 
+    Observational Medical Outcomes Partnership
+    15 December 2009
+ 
+    Template for Launch Instance page
+ 
+   (c)2009 Foundation for the National Institutes of Health (FNIH)
+ 
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not
+    use this file except in compliance with the License. You may obtain a copy
+    of the License at http://omop.fnih.org/publiclicense.
+ 
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. Any
+    redistributions of this work or any derivative work or modification based on
+    this work should be accompanied by the following source attribution: "This
+    work is based on work by the Observational Medical Outcomes Partnership
+    (OMOP) and used under license from the FNIH at
+    http://omop.fnih.org/publiclicense.
+ 
+    Any scientific publication that is based on this work should include a
+    reference to http://omop.fnih.org.
+ 
+================================================================================*/
+?>
+<?php echo $this->partial('_javascript_autoload.phtml', array('page' => 'launch_method'))?>
+<?php echo $this->partial('_validation_support.phtml', array('errors' => $this->errors?$this->errors:null))?>
+
+<script type="text/javascript">
+    current_user_id = <?=$this->user->user_id?>;
+    
+    <?php $splitter = false; ?>
+    const_software_types = {
+    <?php foreach ($this->softwareTypes as $type) : ?>
+        <?php 
+        echo $splitter ? ',' : '';
+        $splitter = true; 
+        ?>
+        '<?=$type['software_type_id']?>' : 
+        {
+            id : '<?=$type['software_type_id']?>', 
+            description: '<?=$type['software_type_description']?>', 
+            platform: '<?=$type['software_type_platform']?>',
+            os_family: '<?=$type['os_family']?>', 
+            ebs_flag: '<?=$type['ebs_flag']?>',
+            gpu_required_flag: '<?=$type['gpu_required_flag']?>',
+            cluster_flag: '<?=$type['cluster_flag']?>'
+        }
+    <?php endforeach; ?>
+    };
+        
+    <?php $splitter = false; ?>
+    const_dataset_types = {
+    <?php foreach ($this->datasetTypes as $type) : ?>
+        <?php 
+        echo $splitter ? ',' : '';
+        $splitter = true; 
+        ?>
+        '<?=$type['dataset_type_id']?>' : 
+        {
+            id : '<?=$type['dataset_type_id']?>',
+            default_flag: '<?=$type['default_checked_flag']?>',
+            description: '<?=$type['dataset_type_description']?>',
+            size: <?=$type['dataset_type_ebs_size']?>
+        }
+    <?php endforeach; ?>
+    };
+
+    <?php $splitter = false; ?>
+    const_temporary_ebs_entries = {
+    <?php foreach ($this->temporaryEbsEntries as $tempEbs) : ?>
+        <?php 
+        echo $splitter ? ',' : '';
+        $splitter = true; 
+        ?>
+        '<?=$tempEbs->id?>' : 
+        {
+            id : '<?=$tempEbs->id?>', 
+            default_flag: '<?=$tempEbs->defaultFlag?>', 
+            description: '<?=$tempEbs->description?>',
+            size: <?=$tempEbs->ebsSize?>
+        }
+    <?php endforeach; ?>
+    };
+
+    <?php $splitter = false; ?>
+    const_instance_sizes = {
+    <?php foreach ($this->instanceTypes as $type) : ?>
+        <?php 
+        echo $splitter ? ',' : '';
+        $splitter = true; 
+        ?>
+        '<?=$type['instance_size_id']?>' : 
+        {
+            id : '<?=$type['instance_size_id']?>', 
+            name : '<?=$type['instance_size_name']?>',
+            aws_instance_size_name : '<?=$type['aws_instance_size_name']?>',
+            description: '<?=$type['instance_size_description']?>',
+            platform: '<?=$type['platform']?>',
+            price: '<?=$type['instance_price']?>',
+            gpu_flag: '<?=$type['gpu_flag']?>',
+            ebs_required_flag: '<?=$type['ebs_required_flag']?>',
+            os_family: '<?=$type['os_family']?>', 
+            cluster_flag: '<?=$type['cluster_flag']?>'
+
+        }
+    <?php endforeach; ?>
+    };
+
+    <?php if ($this->user->organization != null) : ?>
+    admin_factor = <?=$this->user->organization->organization_admin_factor?>;
+    <?php else: ?>
+    admin_factor = 0;
+    <?php endif; ?>
+
+    user_money = <?=$this->user->user_money?>;
+    <?php if (isset($this->selectedInstanceTypes)) : ?>
+    selected_instance_types = <?=$this->selectedInstanceTypes?>;
+    <?php endif; ?>
+    var assigned_instance_names = [<?php 
+    if ($this->instanceNames) {
+        foreach ($this->instanceNames as $i) { 
+            echo "'$i',"; 
+        }
+    }
+    ?>];
+</script>
+
+<style>
+/* 
+This is a workaround for make same margin for Cost and Budget content across all browsers.
+Chrome has different calculation of internal height then FF.
+*/
+#container form.form2  fieldset
+{
+	margin: 20px 0;    
+}
+</style>
+<div class="clear"></div> 
+<div id="message" style="display:none"></div>
+<form action="<?php echo $this->url(array('controller' => 'instance-launch', 'action' => 'submit-method'))?>" method="post" class="form2">
+<div class="invisible_block">
+    <div class="left">
+    <?php echo $this->partial('_round_corners.phtml', array('title' => 'Configure Instances'))?>
+	<fieldset>
+	<legend>Configure Instances</legend>
+	    <div style="margin: 0px;">
+		<label for="idTool">Image:</label>
+		<select id="idTool" name="tool" class="text">
+            <?php foreach ($this->softwareTypes as $type) : ?>
+            <option value="<?=$type['software_type_id']?>"
+                <?=($this->selectedSoftwareType == $type['software_type_id']) ? ' selected="selected"' : '' ?>
+                ><?=$type['software_type_description']?></option>            
+            <?php endforeach; ?>            
+        </select>
+	    </div>
+    
+        <?php if (count($this->datasetTypes)) : ?>
+        <div class="checkbox">
+		<label for="idDatabase">Dataset:</label>
+		<div class="block_left" id="idDatabase">
+            <select name="database_type[]" id="idDatabase">
+		    <?php foreach ($this->datasetTypes as $dt) : ?>
+			<option value="<?=$dt['dataset_type_id']?>"
+            <?php if((!isset($this->selectedDataset) && $dt['default_checked_flag']) 
+                      || ($dt['dataset_type_id'] == $this->selectedDataset)) {
+                      echo 'checked="checked"';
+                  }
+            ?>><?=$dt['dataset_type_description']?></option>
+            <?php endforeach; ?>
+            </select>
+            <?php foreach ($this->datasetTypes as $dt) : ?>
+            <?php if ($dt['encrypted_flag']) : ?>
+                <?php $display = (!$this->selectedDataset && $dt['default_checked_flag']) 
+                                 || ($this->selectedDataset == $dt['dataset_type_id']); ?>
+            <div id="dataset_type_label_<?=$dt['dataset_type_id']?>_password" 
+                 style="color:black;left:11px;position:absolute;<?=!$display ? 'display:none;' : ''?>"
+                 >Password for dataset:<br /></div>
+            <input autocomplete="off" type="password" 
+                class="<?=$display ? 'required="required" ' : ''?>text"
+                name="dataset_type_<?=$dt['dataset_type_id']?>_password" 
+                id="dataset_type_<?=$dt['dataset_type_id']?>_password" 
+                style="<?=!$display ? 'display:none;' : ''?>margin: 6px 0pt 4px 0px;" />
+            <?php endif; ?>
+            <?php endforeach; ?>
+		</div>
+	    </div>
+	    <?php endif; ?>
+    
+        <?php if ($this->vocabularyDt) : ?>
+        <?php $display = (!isset($this->selectedDatasetTypes) && $this->vocabularyDt['default_checked_flag']) 
+                         || (isset($this->selectedDatasetTypes) 
+                             && in_array($this->vocabularyDt['dataset_type_id'], $this->selectedDatasetTypes)); ?>
+	    <div class="checkbox">
+		<label for="idVocabulary">Vocabulary:</label>
+		<div class="block_left" id="idVocabulary">          
+            <p>			
+			<input type="checkbox" class="checkbox" <?=$display ? 'checked="checked"' : ''?>
+				id="dataset_type_<?=$this->vocabularyDt['dataset_type_id']?>" 
+            	name="database_type[]" value="<?=$this->vocabularyDt['dataset_type_id']?>" />  </p>
+            	
+            <?php if ($this->vocabularyDt['encrypted_flag']) : ?>
+            <div id="dataset_type_label_<?=$this->vocabulary_dt->dataset_type_id?>_password"
+            	style="color:black;left:11px;position:absolute;<?!$display?'display:none':''?>">
+            	Password for dataset:<br />
+            </div>
+            <input autocomplete="off" type="password" class="<?=$display?'required':''?> text" 
+            	name="dataset_type_{$vocabulary_dt->dataset_type_id}_password" 
+            	id="dataset_type_<?=$vocabularyDt['dataset_type_id']?>_password" 
+            	style="<?=!$display?'display:none;':''?>margin: 6px 0pt 4px 0px;">
+            <?php endif; ?>
+		</div>
+	    </div>
+	    <?php endif; ?>
+    
+        <div>
+		<label for="idTempEBS">Temporary Storage:</label>
+        <select id="idTempEBS" name="temporary_ebs" onchange="calculateMethodLaunchEstimate()">
+            <option value="">--None--</option>
+            <?php foreach ($this->temporaryEbsEntries as $ebsEntry) : ?>
+            <option value="<?=$ebsEntry->id?>"
+                <?=(!$this->selectedTemporaryEbs && $ebsEntry->defaultFlag == 1) 
+                    || ($this->selectedTemporaryEbs == $ebsEntry->id) 
+                    ? 'selected="selected"' : ''?>
+                ><?=$ebsEntry->ebsSize?>GB</option>
+            <?php endforeach; ?>
+        </select>
+        </div>
+    
+        <div>
+		<label for="idInstancetype">Instance Type:</label>
+        <select id="idInstancetype" name="instance_type" onchange="calculateMethodLaunchEstimate()" style="width:200px;">
+        <?php foreach ($this->instanceTypes as $type) : ?>
+            <option value="<?=$type['instance_size_id']?>"
+                <?=($this->selectedInstanceTypes == $type->instance_size_id) ? ' selected="selected"' : ''?>
+                ><?=$type['instance_size_name']?></option>
+        <?php endforeach; ?>
+        </select>
+        </div>
+    
+        <div>
+		<label for="idInstanceTypeDescription">Description:</label>
+		<textarea id="idInstanceTypeDescription" rows="4" cols="50" class="text_disable" readonly="readonly"><?=$this->instanceTypes[0]['instance_size_description']?></textarea>
+	    </div>
+
+        <div class="checkbox" id="method_wrap">
+	        <label for="idMethod">Method:</label>
+	        <div class="block_left"> 
+	        <select name="method_name" id="idMethod" onchange="updateLaunchOptions()">
+	        <?php foreach ($this->methods as $method) : ?>
+	            <?php if ($method != 'bin') : ?>
+                <option value="<?=$this->escape($method)?>"
+                    <?=$this->selectedMethodName == $method ? 'selected="selected"' : ''?>
+                    ><?=$this->escape($method)?></option>
+                <?php endif; ?>
+            <?php endforeach; ?>
+	        </select>
+	        </div>
+        </div>
+    
+        <div id="idParameter_wrap" style="display:none">
+	        <label for="idParameter">Choose parameter:</label>
+	        <select name="run_parameters[]" id="idParameter" onchange="updateLaunchOptions()" multiple="multiple">
+	        	<option value="Y">All parameters</option>
+                <?php foreach ($this->methodParameters as $methodParameter) : ?>
+                <option value="<?=$this->escape($methodParameter)?>"
+                    <?=$this->selectedRunParameter == $methodParameter ? 'selected="selected"' : ''?>
+                    ><?=$this->escape($methodParameter)?></option>
+                <?php endforeach; ?>
+	        </select>
+        </div>
+    
+        <?php if ($this->user->admin_flag == 'Y') : ?>
+        <div class="checkbox" id="idOverrideMethodParameters_wrap">
+	        <label for="idOverrideMethodParameters">Override parameters:</label>
+	        <input type="checkbox" style="height: 20px;" 
+                id="idOverrideMethodParameters" name="override_parameters" 
+                class="checkbox" <?=$this->selectedOverrideParameters == 'Y' ? 'checked="checked"' : ''?> value="Y" />
+        </div>
+        <div id="idMethodReplacement_wrap" style="display:none">
+	        <label for="idMethodReplacement">HOI/DOI set:</label>
+	        <select name="replacement_parameters[]" id="idMethodReplacement" onchange="updateLaunchOptions()">
+	        <?php foreach ($this->methodReplacements as $methodReplacementParameter) : ?>
+                <option value="<?=$this->escape($methodReplacementParameter->id)?>"
+                    <?=$this->selectedMethodReplacementParameter == $methodReplacementParameter->id ? 'selected="selected"' : ''?>>
+                <?=$this->escape($methodReplacementParameter->name)?></option>
+            <?php endforeach; ?>
+	        </select>
+        </div>
+        <?php endif; ?>
+        
+        <div class="checkbox" id="launch_method_wrap">
+	        <label for="idLaunchMethod">Run on a separate instances:</label>
+	        <input type="checkbox" style="height: 20px;" 
+                id="idLaunchMethod" name="launch_method"
+                <?=$this->selectedLaunchMethod == 'Y' ? 'checked="checked"' : ''?> 
+                class="checkbox" value="Y" onchange="calculateMethodLaunchEstimate()"/>
+        </div>
+        <div class="checkbox">
+	        <label for="idTerminateOnSuccess">Terminate instances<br/>on success:</label>
+	        <input type="checkbox" style="height: 20px;" class="checkbox"
+                id="idTerminateOnSuccess" name="terminate_after_success"
+                <?=$this->selectedTerminateAfterSuccess == 'Y' ? 'checked="checked"' : '' ?> value="Y" />
+        </div>
+        
+        <div>
+        </div>
+	</fieldset>
+    </div>
+    
+    <div class="left_">
+    <?php echo $this->partial('_round_corners.phtml', 
+                   array('title' => 'Cost and Budget <img id="calculating" style="display:none" src="/images/indicator.gif" />'))?>
+    <fieldset>
+    <legend>Cost and Budget</legend>
+        <div style="margin:0px;">
+	        <label for="idLimit" class="twolines">Estimated Instance<br/>$/h:</label>
+	        <input type="text" id="idLimit" class="text_disable" readonly="readonly" value="" name="estimate"/>
+        </div>
+        <div>
+	        <label for="idStorageCharge" class="twolines">Estimated Storage<br/>$/h:</label>
+	        <input type="text" id="idStorageCharge" class="text_disable" readonly="readonly" value="" name="storage_estimage"/>
+        </div>
+        <div>
+	        <label for="idTotalCharge" class="twolines">Estimated Total<br/>$/h:</label>
+	        <input type="text" id="idTotalCharge" class="text_disable" readonly="readonly" value="" name="total_estimage"/>
+        </div>
+        <div>
+	        <label for="idRemaining">Remaining Budget $:</label>
+	        <input type="text" id="idRemaining" class="text_static" readonly="readonly" 
+                value="<?=number_format($this->user->remains_limit)?>" name="remaining" />
+        </div>
+        <div>
+            <label for="idMaxInstancesAllowed">Instances Limit:</label>
+            <input type="text" id="idMaxInstancesAllowed" class="text_static" readonly="readonly" 
+                value="<?=$this->user->num_instances?>" name="num_instances" />
+        </div>
+        <div>
+            <label for="idActiveInstances">Running Instances:</label>
+            <input type="text" id="idActiveInstances" class="text_static" readonly="readonly" 
+                value="<?=$this->user->running_instances_count?>" name="active_instances" />
+        </div>
+	</fieldset>
+    </div>
+    <div class="right">
+        <input onmouseover="this.style.backgroundPosition='bottom';" onmouseout="this.style.backgroundPosition='top';"
+               type="submit" name="button_submit" id="button_submit" class="button_90" value="Launch" 
+               onclick="javascript: return hide_launch_button();" 
+               <?php if($user->certificate_public_key == '') : ?>
+               onclick="alert('Certificate not set for you account. You are not able launch instances.');return false;"
+               <?php endif; ?> />
+    </div>
+</div>
+</form>
+<div class="clear"></div>

@@ -1,0 +1,163 @@
+<?php /*================================================================================
+    OMOP - Cloud Research Lab
+
+    Observational Medical Outcomes Partnership
+    15 December 2009
+
+    Contains class Application that act as main entry point for the application
+	specific logic. This class handle all logic that are the same for all pages
+	across all aplication.
+
+    �2009 Foundation for the National Institutes of Health (FNIH)
+
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not
+    use this file except in compliance with the License. You may obtain a copy
+    of the License at http://omop.fnih.org/publiclicense.
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. Any
+    redistributions of this work or any derivative work or modification based on
+    this work should be accompanied by the following source attribution: "This
+    work is based on work by the Observational Medical Outcomes Partnership
+    (OMOP) and used under license from the FNIH at
+    http://omop.fnih.org/publiclicense.
+
+    Any scientific publication that is based on this work should include a
+    reference to http://omop.fnih.org.
+
+================================================================================*/
+?>
+<?php $this->headLink()->appendStylesheet('/css/jquery/smoothness/jquery-ui-1.7.3.custom.css')?>
+<?php echo $this->partial('_javascript_autoload.phtml', array('page' => 'result_storage'))?>
+<?php $this->headScript()->appendFile('/js/jquery-ui-1.7.3.custom.min.js')?>
+<?php $this->headScript()->appendFile('/js/ftiens4.js')?>
+<div class="clear"></div>
+<div class="list">
+    <?php echo $this->partial('_round_corners.phtml')?>
+   <form action="<?=$this->formAction?>" method="post" enctype="multipart/form-data"
+        class="form2" id='result-storage-form'>
+          <div id="results-hint" style="display:none">
+            All result files should be in ZIP archive under following directory structure:<br />
+            &lt;DATASET&gt;/&lt;METHOD&gt;/results/&lt;RUN&gt;/&lt;RESULT FILE&gt;<br />
+<br />
+            An example of folder structure:
+            <div id="tree">
+                <script type="text/javascript">
+                    ICONPATH="/images/"
+                    foldersTree = gFld('GE', 'javascript:parent.op();')
+                    f = foldersTree
+                    method1 = insFld(f,gFld('LGPS', 'javascript:parent.op();'))
+                    method2 = insFld(f,gFld('BLR', 'javascript:parent.op();'))
+                    method1_results = insFld(method1,gFld('results'))
+                    method2_results = insFld(method2,gFld('results'))
+                    run11= insFld(method1_results,gFld('GE_LGPS_1'))
+                    run12= insFld(method1_results,gFld('GE_LGPS_2'))
+                    run21= insFld(method2_results,gFld('GE_BLR_1'))
+                    run22= insFld(method2_results,gFld('GE_BLR_2'))
+                    doc111 = insDoc(run11, gLnk('S', 'GE_LGPS_Ptrue.txt'))
+                    doc112 = insDoc(run11, gLnk('S', 'GE_LGPS_Pfalse.txt'))
+                    doc121 = insDoc(run12, gLnk('S', 'GE_LGPS_Ptrue.txt'))
+                    doc122 = insDoc(run12, gLnk('S', 'GE_LGPS_Pfalse.txt'))
+                    doc211 = insDoc(run21, gLnk('S', 'GE_BLR_Ptrue.txt'))
+                    doc212 = insDoc(run21, gLnk('S', 'GE_BLR_Pfalse.txt'))
+                    doc221 = insDoc(run22, gLnk('S', 'GE_BLR_Pfalse.txt'))
+                    doc222 = insDoc(run22, gLnk('S', 'GE_BLR_Ptrue.txt'))
+                    initializeDocument();
+                </script>
+            </div>
+       </div>
+        <input type="hidden" name="process" value="upload" />
+        <fieldset>
+        <legend>Result Storage</legend>
+
+        <?php
+        /**
+         * @todo replace these success/error messages with Zend Validation messages
+         */
+        if(sizeof($this->errors)): ?>
+        <div class="errors">
+            <?php foreach($this->errors as $e): ?>
+            <div><?=nl2br(htmlspecialchars($e))?></div>
+            <?php endforeach; ?>
+        </div>
+        <?php endif;?>
+        <?php if (sizeof($this->warnings)): ?>
+        <div class="warning">
+        <?php foreach ($this->warnings as $w):?>
+        <p><?=htmlentities($w)?></p>
+        <?php endforeach ?>
+        </div>
+        <?php endif ?>
+        <?php if (sizeof($this->messages)): ?>
+        <?php foreach($this->messages as $e): ?>
+        <div class="success"><?=nl2br(htmlspecialchars($e))?></div>
+        <?php endforeach; ?>
+        <?php endif ?>
+
+        <div>
+            <label for="method-method">&nbsp;</label>
+            <input type="radio" id="method-method" name="method" value="method" <?=$this->options['method']=='method' ? 'checked="checked"' : '' ?> /><label for="method-method" class="inline"> Common Method</label>
+            <input type="radio" id="method-oscar" name="method" value="oscar" <?=$this->options['method']=='oscar' ? 'checked="checked"' : '' ?> /><label for="method-oscar" class="inline"> OSCAR</label>
+        </div>
+
+        <!--div>
+            <label for="idDataset">Select dataset:</label>
+            <?php if(count($this->datasetTypes)): ?>
+            <select id="idDataset" name="dataset">
+                <?php foreach($this->datasetTypes as $id => $datasetType): ?>
+                <option value="<?=$id?>" <?php echo $id == $this->dataset ? 'selected="selected"' : ''; ?>><?=$datasetType?></option>
+                <?php endforeach; ?>
+            </select>
+            <?php else: ?>
+            <p><em>There are no available datasets.</em></p>
+            <?php endif;?>
+        </div-->
+        
+        <div>
+            <label for="idExperiment">Select Experiment:</label>
+            <?php if(count($this->experimentTypes)): ?>
+            <select id="idExperiment" name="experiment">
+                <?php foreach($this->experimentTypes as $id => $experimentType): ?>
+                <option value="<?=$id?>" <?php echo $id == $this->experiment ? 'selected="selected"' : ''; ?>><?=$experimentType?></option>
+                <?php endforeach; ?>
+            </select>
+            <?php else: ?>
+            <p><em>There are no available experiments.</em></p>
+            <?php endif;?>
+        </div>
+
+        <div style="width:400px">
+            <label for="results_file">Select file to upload:</label>
+            <input type="file" id="results_file" name="results_file" /> 
+            <a href="javascript:void(0)" onclick="$('#results-hint').toggle();$('div.list').height($('#results-hint').height()+30)" style="margin-left: 140px">Show hint</a>
+        </div>
+       <script type="text/javascript">
+//               $(document).ready(function() {$('#results-hint').dialog({'autoOpen':false})})
+	</script>
+        <div>
+            <label for="load-s3"> </label>
+            <input type="checkbox" id="load-s3" name="load_s3" <?=$this->options['load_s3'] ? 'checked="checked"' : '' ?> value="1" /><label for="load-s3" class="inline"> Load into S3</label>
+        </div>
+        <div>
+            <label for="load-oracle"> </label>
+            <input type="checkbox" id="load-oracle" name="load_oracle" <?=$this->options['load_oracle'] ? 'checked="checked"' : '' ?> value="1" /><label for="load-oracle" class="inline"> Load into Oracle database</label>
+        </div>
+
+        <div>
+            <label for="override-results"> </label>
+            <input type="checkbox" id="override-results" name="override_results" <?=$this->options['override_results'] ? 'checked="checked"' : '' ?> value="1" /><label for="override-results" class="inline"> Overwrite existing results</label>
+        </div>
+
+        <div>
+            <label for="button-submit"> </label>
+            <input type="submit" value="Submit" class="button_90 no-margin" id="button-submit" name="button_submit" onmouseout="this.style.backgroundPosition='top';" onmouseover="this.style.backgroundPosition='bottom';" style="background-position: center top;">
+        </div>
+        </fieldset>
+    </form>
+</div>
+
+<div id="result-loading" style="display: none;" title="Uploading Data">
+  Loading your data.<br />
+  Please wait, this may take some time.
+</div>

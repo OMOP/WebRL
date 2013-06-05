@@ -1,0 +1,7 @@
+<?php $this->headScript()->appendFile('/js/jquery-ui-1.7.3.custom.min.js') ?>
+<?php $this->headLink()->appendStylesheet('/css/jquery/smoothness/jquery-ui-1.7.3.custom.css');?>
+
+<div class="invisible_block">
+<?php $this->form->setAction($this->url()) ?>
+<?php echo $this->form ?>
+</div>

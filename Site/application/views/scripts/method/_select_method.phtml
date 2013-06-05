@@ -1,0 +1,8 @@
+<div style="margin: 15px 0 0 20px">
+<label for="method_select">Select Method:</label>
+<select id="method_select">
+    <?php foreach ($this->partial()->view->methods as $id => $abbr): ?>
+    <option value="<?php echo $this->partial()->view->url(array('id' => $id)) ?>" <?php if ($id == $this->partial()->view->selectedMethod) echo 'selected="selected"'?>><?php echo $abbr ?></option>
+    <?php endforeach ?>
+</select>
+</div>

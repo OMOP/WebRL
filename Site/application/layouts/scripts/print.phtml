@@ -1,0 +1,41 @@
+<?php echo $this->doctype(); ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <?php echo $this->headMeta(); ?>
+    	<?php echo $this->headTitle(); ?>
+    	<?php echo $this->headLink(); ?>
+    	<?php echo $this->headScript(); ?>
+    	<?php echo $this->headStyle(); ?>
+    </head>
+	<body>
+        <div id="all">
+            <div id="header">
+                <div class="head_block_small" style="padding: 0 175px 0 0; width: 150px;">
+                    <h1><?php
+                    $current_user = Membership::get_current_user();
+                    $user_name = $current_user?($current_user->first_name . ' '. $current_user->last_name):'NOT IMPLEMENTED YET';
+                    echo $this->escape($user_name);
+                    ?><br/>
+                    Print Date:<br/>
+                    <?php 
+                    echo $this->dateFormat(gmdate('c'));
+                    ?></h1>
+                </div>
+            <div class="head_block_big">
+                <a href="<?php echo PageRouter::build('instances'); ?>" title="OBSERVATIONAL MEDICAL OUTCOMES PARTNERSHIP"><img src="/images/logo.gif" width="110" height="27" alt="OBSERVATIONAL MEDICAL OUTCOMES PARTNERSHIP" /></a>
+                <h1>Research Lab</h1>
+            </div>
+            <div class="logo">
+                <a href="http://omop.fnih.org" title="OBSERVATIONAL MEDICAL OUTCOMES PARTNERSHIP"><img src="/images/logo_OMOP.gif" width="416" height="33" alt="OBSERVATIONAL MEDICAL OUTCOMES PARTNERSHIP" /></a>
+            </div>
+            </div>
+            <div id="container">
+                <?php echo $this->placeholder('pageTitle') ?>
+                <div class="clear"></div>
+                <?php echo $this->layout()->content; ?>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,19 @@
+<?php $this->headScript()->captureStart()?>
+function toggleOrgs() {
+    if ($('#access').is(':checked'))
+        $('#div-orgs').css('opacity', '0');
+    else
+        $('#div-orgs').css('opacity', '1');
+}
+
+$(document).ready(function() {
+    toggleOrgs();
+    $('#access').change(toggleOrgs);
+});
+<?php $this->headScript()->captureEnd()?>
+
+
+<div class="invisible_block invisible_block_3columns">
+<?php $this->form->setAction($this->url()) ?>
+<?php echo $this->form ?>
+</div>

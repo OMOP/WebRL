@@ -1,0 +1,46 @@
+<style type="text/css">
+#container form.form2 label {
+    margin-top: 0
+}
+</style>
+<div class="invisible_block">
+        <form class="form2">
+            <div class="list">
+            <fieldset>
+            <?php echo $this->partial('_round_corners.phtml', array('title' => ''))?>
+                <div>
+                    <label>Log Entry ID:</label>
+                    <?php echo $this->escape($this->event->getId())?>
+                </div>
+                <div>
+                    <label>User:</label>
+                    <a href="/index.php?page=edit_user&action=<?php echo $this->event->getUserId()?>"><?php echo $this->escape($this->event->getUserLogin())?></a>&nbsp;
+                </div>
+                <div>
+                    <label>Remote IP:</label>
+                    <?php echo $this->escape($this->event->getRemoteIp())?>
+                </div>
+                <div>
+                    <label>Date:</label>
+                    <?php echo $this->dateFormat($this->escape($this->event->getDate()))?>
+                </div>
+                
+                <div style="width:700px">
+                    <label>Message:</label>
+                    <textarea readonly="readonly" style="width:500px"><?php echo $this->escape($this->event->getDescription())?></textarea>
+                <div style="width:700px">
+                    <label>Exception Details:</label>
+                    <textarea readonly="readonly" style="height: 400px;width:500px"><?php echo $this->escape($this->event->getDetails())?></textarea>
+                </div>
+        	    <div>
+                    <label><input onmouseover="this.style.backgroundPosition='bottom';"
+                        onmouseout="this.style.backgroundPosition='top';"
+                        onclick="window.location='<?php echo $this->referer?>';"
+                        type="button" id="button_back" class="button_90" value="Back" />
+                    </label>
+                </div>
+                
+        </fieldset>
+        </div>
+        </form>
+</div>

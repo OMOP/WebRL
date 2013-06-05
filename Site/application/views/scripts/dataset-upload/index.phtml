@@ -1,0 +1,37 @@
+<?php $this->headScript()->appendFile('/js/jquery-ui-1.8.6.custom.min.js')?>
+<?php $this->headLink()->appendStylesheet('/css/jquery/smoothness/jquery-ui-1.7.3.custom.css'); ?>
+
+<script type="text/javascript">
+    
+    function observeProgress() {
+        setTimeout('getProgress()', 5000)
+    }
+    
+    function getProgress() {
+        $('#container form.form2 span').remove();
+        progress = $('<div></div>')
+        progress.addClass('dataset-progressbar')
+        progress.attr('id', 'progressbar')
+        $('.form2 .left').append(progress)
+        progress.progressbar()
+        iframe = $('<iframe>')
+        iframe.addClass('hidden-iframe');
+        iframe.attr('src', '<?php echo $this->url(array('action'=>'progress'))?>' + '?progress_key=' +$('#progress_key').val())
+        $('body').append(iframe)
+    }
+    
+    function Zend_ProgressBar_Update(data) {
+        $('#progressbar').progressbar('value', data.current / data.max * 100)
+    }
+    
+    function Zend_ProgressBar_Finish() {
+        $('#progressbar').progressbar('value', 100)
+        $('#progressbar').remove()
+    }
+</script>
+<div class="invisible_block half">
+<?php $this->form->setAction($this->url(array('action' => 'load'))) ?>
+<?php echo $this->form ?>
+</div>
+
+<iframe class="hidden-iframe" name="iframe"></iframe>

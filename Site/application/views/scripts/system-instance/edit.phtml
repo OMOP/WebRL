@@ -1,0 +1,17 @@
+<?php $this->headScript()->appendFile('/js/jquery-ui-1.7.3.custom.min.js') ?>
+<?php $this->headLink()->appendStylesheet('/css/jquery/smoothness/jquery-ui-1.7.3.custom.css');?>
+
+<?php $this->headScript()->captureStart(); ?>
+$(document).ready(function() {
+    $("#endDate").datepicker({
+        buttonImage: '/images/datepicker.png',
+        buttonImageOnly: true,
+        showOn: "button",
+        dateFormat: 'yy-mm-dd'
+    });
+});
+<?php $this->headScript()->captureEnd(); ?>
+<div class="invisible_block half">
+<?php $this->form->setAction($this->url()) ?>
+<?php echo $this->form ?>
+</div>

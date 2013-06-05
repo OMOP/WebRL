@@ -1,0 +1,8 @@
+<?php echo $this->form ?>
+
+<?php if ($this->error):?>
+    <script type="text/javascript">
+        $(parent.document).find('form').replaceWith($(document).find('form'))
+        console.log($(parent.document).find('form'))
+    </script>
+<?php endif; ?>

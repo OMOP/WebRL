@@ -1,0 +1,625 @@
+html {margin: 0; padding: 0; background: #fff; font: 12px/14px Arial; height: 100%;}
+body {margin: 0; padding: 0; width: 100%; height: 100%;}
+
+a:hover {text-decoration: none;}
+form {margin: 0; padding: 0;}
+form strong {color: red; margin: 0 2px;}
+#all {width: 1180px; margin: 0 auto; padding: 0; min-height: 100%;}
+
+#header {width: 1180px; height: 55px; margin: 0; padding: 0; border-bottom: 2px solid #696796; text-align: center;}
+#header img {border: none;}
+#header div.logo {float: right; }
+#header div.logo img {margin: 15px 20px 0 0;}
+#header div.head_block_big {border-left: 1px solid #474747; height: 45px; margin: 5px 0; padding: 0; width: 150px; float: right;}
+#header div.head_block_big h1 {font-size: 16px; margin: 2px 0 0 0;}
+#header div.head_block_big img {float: none; margin: 0;}
+#header div.head_block_small {border-left: 1px solid #474747; height: 45px; margin: 5px 0; padding: 0; width: 100px; float: right; text-align: right;}
+#header div.head_block_small h1 {font-size: 10px; color: #000; margin: 10px 20px 0 4px; padding: 0; font-weight: normal;white-space:nowrap;}
+#header div.head_block_small p {font-size: 10px; color: #000; margin: 5px 20px 0 0; padding: 0;text-align: right;}
+#header div.head_block_small a {color: #000;}
+
+#container {width: 1180px; margin: 0; padding: 0; background: url(images/container_top.gif) no-repeat top left; border-top: 1px solid #696796;}
+#container h1 {font-size: 18px; margin: 5px 0; color: #fff; text-transform: uppercase; text-align: center; font-weight: normal; line-height: 30px; background: url(images/top_line.gif) repeat-x;}
+
+img {border: none; padding: 0; margin: 0; }
+
+img.color_top_left {position: absolute; top: 0px; left: -1px;}
+img.color_top_right {position: absolute; top: 0px; right: -1px;}
+img.top_left {position: absolute; top: -1px; left: -1px;}
+img.top_right {position: absolute; top: -1px; right: -1px;}
+img.bottom_left {position: absolute; bottom: -1px; left: -1px;}
+img.bottom_right {position: absolute; bottom: -1px; right: -1px;}
+
+.button_80 { display: inline-block; width: 80px; height: 30px; background: url(images/button_80.gif) no-repeat top left; border: none; padding: 0; margin: 0; cursor: pointer; font: 13px/13px Arial; color: #000;}
+.button_login {width: 80px; height: 30px; background: url(images/button_80.gif) no-repeat top left; border: none; padding: 0; margin: 0 0 0 287px; cursor: pointer; font: 13px/13px Arial; color: #000;}
+.button_90 {width: 90px; height: 30px; background: url(images/button_90.gif) no-repeat top left; border: none; padding: 0; margin: 0 0 0 10px; cursor: pointer; font: 13px/13px Arial; color: #000;}
+.button_105 {display: inline-block; text-align:center; text-decoration:none; width: 105px; height: 30px; background: url(images/button_105.gif) no-repeat top left; border: none; padding: 0; margin: 5px 0 0 0; cursor: pointer; font: 13px/30px Arial; color: #000;}
+.button_185 {display: inline-block; text-align:center; text-decoration:none; width: 185px; height: 30px; background: url(images/button_185.gif) no-repeat top left; border: none; padding: 0; margin: 0; cursor: pointer; font: 13px/30px Arial; color: #000;}
+
+.no-border {border: 0 !important;}
+.no-margin {margin: 0 !important;}
+.inline {display: inline !important; float: none !important;}
+
+#container div.login {width: 450px; margin: 50px auto 0 auto; border-left: 1px solid #6c6b73; border-right: 1px solid #6c6b73; border-bottom: 1px solid #6c6b73; position: relative;}
+#container div.login h1 {margin: 0; padding: 0; background: url(images/top_line.gif) repeat-x top left; line-height: 32px; font-size: 18px; font-weight: normal; color: #fff; text-align: center;}
+#container div.login p {margin: 20px 30px;}
+
+#container div.password {width: 450px; margin: 50px auto 0 auto; border: 1px solid #6c6b73; position: relative;}
+#container div.password p {margin: 20px 30px; text-align:center;}
+
+#container form.form1 fieldset {border: none; margin: 30px 0; padding: 0;}
+#container form.form1 div {margin: 10px 0 0 0;}
+#container form.form1 legend {display: none;}
+#container form.form1 label {float: left; font: 12px/12px Arial; text-align: right; margin: 4px 10px 0 0;width: 160px;}
+#container form.form1 p {margin: 10px 0 0 275px; padding: 0; font-size: 11px;}
+#container form.form1 p a {color: #000;}
+#container form.form1 div div  {color: #FF2448; font-size: 12px; margin: 0 0 0 170px;}
+#container form.form1 input.text {width: 185px; font: 11px/11px Arial; border-left: 1px solid #aeb0af; border-right: 1px solid #aeb0af; border-top: 1px solid #999999; border-bottom: 1px solid #dadada; padding: 3px 5px; margin: 0;}
+
+ul.navigation {margin: 0px 0 0px 20px; padding: 0;width: 1150px;}
+ul.navigation ul {position: absolute; z-index: 100;}
+ul.navigation li ul {display: none;padding: 0px;}
+ul.navigation li:hover ul {display: block;}
+ul.navigation li {float: left; width: 130px; list-style: none; line-height: 33px; font-size: 13px; color: #fff; font-weight: bold; background: url(images/menu.gif) no-repeat top left; text-align: center; margin: 20px 10px 0 0;}
+ul.navigation li a {color: #fff; text-decoration: none; display: block; padding: 0; height: 33px;}
+ul.navigation li.active a {color: #7474a8;}
+ul.navigation li.active {background-position: bottom;}
+ul.navigation li:hover, ul.navigation li.over {background: url(images/menu.gif) no-repeat bottom left; height: 33px;}
+ul.navigation li:hover a, ul.navigation li.over a {color: #7572a7;}
+ul.navigation li li {display: block; float: inherit;margin:0;}
+ul.navigation li li a {color: #fff;}
+ul.navigation li:hover li a {color: #fff;}
+ul.navigation li li:hover a {color: #7474a8;}
+ul.navigation li li.active a {color: #7474a8;}
+ul.navigation li.right {float: right;}
+
+#container div.list {width: 1140px; margin: 20px auto 0 auto; border: 1px solid #6c6b73; position: relative;}
+#container div.list h2 {color: #6c6b73; font-size: 12px; margin: 0; padding: 0 20px; position: absolute; top: -7px; left: 30px; background: #fff;}
+#container div.list table {width: 1120px; margin: 15px 0 15px 10px;}
+#container div.list table thead th {text-align: left; padding-left: 10px; font-size: 12px; color: #fff; background: url(images/top_line.gif) repeat-x; line-height: 30px; border-left: 2px solid white;}
+#container div.list table thead th a {font-size: 12px; color: #fff; text-decoration: none; }
+#container div.list table thead td img {border: none; vertical-align: middle; margin: 0 0 0 5px;}
+#container div.list table thead th.first {border: none; width: 50px;}
+#container div.list table thead td {font-size: 12px; color: #fff; background: url(images/top_line.gif) repeat-x; line-height: 30px; font-weight: bold; border-left: 2px solid white; padding: 0 0 0 8px;}
+#container div.list table tbody th {font-weight: normal; line-height: 30px; border-bottom: 1px solid #6d6a87;}
+#container div.list table tbody td {border-bottom: 1px solid #6d6a87; padding: 3px 0 3px 10px; height: 30px; text-align:left; font-size:11px;}
+#container div.list table tbody td.right {text-align:right; ; padding: 0 10px 0 0}
+#container div.list table tbody td.center {text-align:center; }
+#container div.list table tfoot th {font-weight: normal; text-align: right; line-height: 30px;}
+#container div.list table tfoot th a {margin: 0 0 0 10px; text-decoration: none;}
+#container div.list table tfoot th span {margin: 0 0 0 10px; }
+#container div.list table tfoot td {text-align: left;}
+#container div.list table a, .table-link, #runs-list a, #run-details a {color: #7474a8;}
+#container div.list table a:hover, .table-link:hover {text-decoration: none;}
+
+#container div.invisible_block {margin-left: 20px; width: 740px;}
+#container div.half {margin-left: 20px; width: 350px;}
+#container div.invisible_block div.left {width: 350px; margin: 20px 0 10px 0; padding: 0; float: left; position: relative; border: 1px solid #6c6b73;}
+#container div.invisible_block div.left_ {width: 350px; margin: 20px 0 10px 0; padding: 0; float: right; position: relative; border: 1px solid #6c6b73;}
+#container div.invisible_block div.left_wide {width: 440px; margin: 20px 0 10px 0; padding: 0; float: left; position: relative; border: 1px solid #6c6b73;}
+#container div.invisible_block h2 {color: #6c6b73; font-size: 12px; margin: 0; padding: 0 20px; position: absolute; top: -7px; left: 30px; background: #fff;}
+#container div.invisible_block div.right {text-align: right; margin: 0; float:right;}
+#container div.invisible_block div.right_wide {text-align: left; margin: 0; float:right; width: 400px;}
+#container div.half div.right {text-align: right; margin: 0; float:right; width: 350px;}
+    #container div.invisible_block_3columns {width: 1100px;}
+    #container div.invisible_block_3columns div.left_ {
+        margin-left: 20px;
+    }
+
+#container form.form2 fieldset {border: none; margin: 12px 0 20px 0; padding: 0;}
+#container form.form2 #fileset a {display: block}
+#container form.form2 div {margin: 10px 0 0 0; }
+#container form.form2 legend {display: none;}
+#container form.form2 label {float: left; font: 12px/12px Arial; text-align: right; margin: 4px 10px 0 0; width: 130px;}
+#container form.form2 label.twolines {margin: 0px 10px 0 0; }
+#container form.form2 label.bigline {margin: 8px 10px 0 0; }
+#container form.form2 .checkbox label {float: left; font: 12px/12px Arial; text-align: right; margin: 1px 10px 0 0; width: 130px; clear: left;}
+#container form.form2 p {margin: 0; padding: 0;}
+#container form.form2 input.text {width: 185px; font: 11px/11px Arial; border-left: 1px solid #aeb0af; border-right: 1px solid #aeb0af; border-top: 1px solid #999999; border-bottom: 1px solid #dadada; padding: 3px 5px; margin: 0;}
+#container form.form2 input.text_disable {width: 185px; font: 11px/11px Arial; background: #737373; color: #fff; font-weight: bold; text-align: left; border-left: 1px solid #aeb0af; border-right: 1px solid #aeb0af; border-top: 1px solid #999999; border-bottom: 1px solid #dadada; padding: 3px 5px; margin: 0;}
+#container form.form2 input.text_static {width: 185px; font: 11px/11px Arial; background: #000; color: #fff; font-weight: bold; text-align: left; border-left: 1px solid #aeb0af; border-right: 1px solid #aeb0af; border-top: 1px solid #999999; border-bottom: 1px solid #dadada; padding: 3px 5px; margin: 0;}
+#container form.form2 select {font: 11px/11px Arial; border-left: 1px solid #aeb0af; border-right: 1px solid #aeb0af; border-top: 1px solid #999999; border-bottom: 1px solid #dadada; padding: 0; margin: 0;}
+#container form.form2 textarea {width:194px; height:67px; overflow-y: hidden; font: 11px/11px Arial; border: 0px none; padding: 0; margin: 0;}
+#container form.form2 textarea.text {width:310px; height:67px; overflow-y: hidden; font: 11px/11px Arial; border-left: 1px solid #aeb0af; border-right: 1px solid #aeb0af; border-top: 1px solid #999999; border-bottom: 1px solid #dadada; padding: 0; margin: 4px 10px 0px 20px;}
+#container form.form2 .list textarea {width:800px; height:80px; overflow-y: visible; overflow-x: hidden; font: 11px/11px Arial; border: 1px solid #aeb0af; padding: 0; margin: 0;}
+#container form.form2 span {color: #FF2448; font-size: 10px; margin: 0 0 0 140px;display: block;}
+#container form.form2 div.checkbox div span {color: #FF2448; font-size: 10px; margin: 0 0 0 0px;display: block;}
+#container form.form2 input.checkbox {margin: 0 !important; padding: 0 120px 0 0; vertical-align: top;}
+#container form.form2 input[type="checkbox"] { margin: 0px 3px 0px 0px; padding: 0 120px 0 0; vertical-align: top; position:relative; top: 2px;}
+#container form.form2 input.radio {margin: 0 !important; padding: 0 120px 0 0; vertical-align: top;}
+#container form.form2 input[type="radio"] { margin: 0px; padding: 0 120px 0 0; vertical-align: top; position:relative; top: 2px;}
+#container form.form2 input.text_date{width: 165px; font: 11px/11px Arial; border-left: 1px solid #aeb0af; border-right: 1px solid #aeb0af; border-top: 1px solid #999999; border-bottom: 1px solid #dadada; padding: 3px 5px; margin: 0;}
+/*
+#container form.form2 input.checkbox:first-child { color: red; margin: 0; padding: 0; vertical-align: top;}
+*/
+#container form.form2 div div.block_left{padding:0 0 0 140px;width:210px}
+
+#container form.form3 fieldset {border: none; margin: 10px 0 20px 0; padding: 0;}
+#container form.form3 div {margin: 10px 0 0 0;}
+#container form.form3 div div.block_left {float: left; margin: 2px 0 10px 0; padding: 0;}
+#container form.form3 legend {display: none;}
+#container form.form3 label {float: left; font: 12px/12px Arial; text-align: right; margin: 4px 10px 0 0; width: 150px;}
+#container form.form3 p {margin: 0; padding: 0;}
+#container form.form3 input.text {width: 135px; font: 11px/11px Arial; border-left: 1px solid #aeb0af; border-right: 1px solid #aeb0af; border-top: 1px solid #999999; border-bottom: 1px solid #dadada; padding: 3px 5px; margin: 0;}
+#container form.form3 input.text_disable {width: 135px; font: 11px/11px Arial; background: #737373; font-weight: bold; color: #fff; text-align: center; border-left: 1px solid #aeb0af; border-right: 1px solid #aeb0af; border-top: 1px solid #999999; border-bottom: 1px solid #dadada; padding: 3px 5px; margin: 0;}
+#container form.form3 span {color: #7474a8; font-size: 10px; margin: 0 0 0 160px;}
+
+#container form.form3_ fieldset {border: none; margin: 10px 0 20px 0; padding: 0;}
+#container form.form3_ div {margin: 10px 0 0 0;}
+#container form.form3_ div div.block_left {float: left; margin: 2px 0 10px 0; padding: 0;}
+#container form.form3_ legend {display: none;}
+#container form.form3_ label {float: left; font: 12px/12px Arial; text-align: left; margin: 0 10px 0 30px; width: 50px;}
+#container form.form3_ p {margin: 0; padding: 0;}
+#container form.form3_ input.text {width: 270px; font: 11px/11px Arial; border-left: 1px solid #aeb0af; border-right: 1px solid #aeb0af; border-top: 1px solid #999999; border-bottom: 1px solid #dadada; padding: 3px 5px; margin: 0 0 0 30px; }
+#container form.form3_ input.checkbox {padding: 0; margin: 0 120px 0 0; vertical-align: top;}
+#container form.form3_ span  {color: #FF2448; font-size: 12px; margin: 0 0 0 30px;}
+#container form.form3_ textarea {width: 270px; height: 90px; margin: 0 0 0 30px; border-left: 1px solid #aeb0af; border-right: 1px solid #aeb0af; border-top: 1px solid #999999; border-bottom: 1px solid #dadada; padding: 3px 5px;}
+#container form.form3_ input.text_disable {width: 135px; font: 11px/11px Arial; background: #737373; font-weight: bold; color: #fff; text-align: center; border-left: 1px solid #aeb0af; border-right: 1px solid #aeb0af; border-top: 1px solid #999999; border-bottom: 1px solid #dadada; padding: 3px 5px; margin: 0;}
+
+#container form.form4 fieldset {border: none; margin: 20px 0 0 0; padding: 0;}
+#container form.form4 div {float: left; margin: 0 35px 0 0; padding: 0;}
+#container form.form4 legend {display: none;}
+#container form.form4 label {font: 12px/12px Arial; margin: 0 10px; float: left; line-height: 18px;}
+#container form.form4 input.radio {font: 11px/11px Arial; margin: 0 5px 0 0; vertical-align: middle;}
+#container form.form4 p {float: left; margin: 0 15px 0 0; padding: 0;}
+#container form.form4 select {font: 12px/12px Arial; border: 1px solid #aeb0af; float: left;}
+
+#container form.form5 fieldset {border: none; margin: 0; padding: 0; float: right;}
+#container form.form5 div {float: left; margin: 0 0 0 10px; padding: 0;}
+#container form.form5 legend {display: none;}
+#container form.form5 label {float: left; font: 12px/12px Arial; text-align: right; margin: 4px 5px 0 0; width: 35px; text-align: right;}
+#container form.form5 input.text {width: 100px; font: 11px/11px Arial; border-left: 1px solid #aeb0af; border-right: 1px solid #aeb0af; border-top: 1px solid #999999; border-bottom: 1px solid #dadada; padding: 3px 5px; margin: 0;}
+#container form.form5 select {font: 12px/12px Arial; border: 1px solid #aeb0af; float: left; margin: 0 15px 0 0;}
+
+#container form.form6 fieldset {border: none; margin: 0; padding: 0;}
+#container form.form6 div {float: left; margin: 10px 0 0 10px; padding: 0; width: 350px;}
+#container form.form6 legend {display: none;}
+#container form.form6 label {float: left; font: 12px/12px Arial; text-align: right; margin: 4px 5px 0 30px; width: 150px; text-align: right;}
+#container form.form6 span {color: #FF2448; font-size: 10px; margin: 0 0 0 185px; display:block;}
+#container form.form6 input.text {width: 150px; font: 11px/11px Arial; border-left: 1px solid #aeb0af; border-right: 1px solid #aeb0af; border-top: 1px solid #999999; border-bottom: 1px solid #dadada; padding: 3px 5px; margin: 0;}
+#container form.form6 p {float: right; margin: 10px 0 20px 0; padding: 0;}
+
+#footer {width: 1180px; height: 31px; margin: 20px auto 0 auto; padding: 0; background: url(images/footer.gif) repeat-x top left; text-align: center;}
+#footer p {margin: 0; padding: 0; line-height: 31px; color: #fff; font-size: 11px;}
+#footer p a {color: #fff;}
+
+div.clear {clear: both; line-height: 1px; font-size: 1px; float: none;}
+
+#container div.error {margin: 20px 0 0 0; text-align: left; width: 400px;}
+
+.red {
+    color: #D8000C !important;
+}
+
+.info, .success, .warning, .errorbox, .validation {
+    border: 1px solid;
+    margin: 10px 0px;
+    padding:15px 20px 15px 20px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+}
+.info {
+    color: #00529B;
+    background-color: #BDE5F8;
+    background-image: url('info.png');
+}
+.success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+    background-image:url('success.png');
+}
+.warning {
+    color: #9F6000;
+    background-color: #FEEFB3;
+    background-image: url('warning.png');
+}
+.errorbox {
+    color: #D8000C;
+    background-color: #FFBABA;
+    background-image: url('error.png');
+}
+
+.number {
+    text-align: right;
+}
+a.tooltip_handle{
+    cursor:text;
+    position:relative; /*this is the key*/
+    z-index:24; 
+    /*color:#000 !important;*/
+    /*text-decoration:none*/
+}
+
+a.tooltip_handle:hover{z-index:25; }
+
+a.tooltip_handle span.tooltip{display: none; line-height: inherit;}
+
+a.tooltip_handle:hover span.tooltip{ /*the span will display just on :hover state*/
+    display:block;
+    position:absolute;
+    top:15px; left:20px; 
+    border:1px solid #7474A8;
+    background-color:white; 
+    color:#000;
+    text-align: left;
+    padding:4px;
+    line-height: 20px;
+}
+
+a.tooltip_handle_datasets{
+    cursor:text;
+    position:relative; /*this is the key*/
+    z-index:24; 
+    color:#000 !important;
+    text-decoration:none
+}
+
+a.tooltip_handle_datasets:hover{z-index:25; }
+
+a.tooltip_handle_datasets span.tooltip{display: none; line-height: inherit;}
+
+a.tooltip_handle_datasets:hover span.tooltip{ /*the span will display just on :hover state*/
+    display:block;
+    position:absolute;
+    top:15px; left:20px; 
+    border:1px solid #7474A8;
+    background-color:white; 
+    color:#000;
+    text-align: left;
+    padding:4px;
+    line-height: 20px;
+}
+
+#message{
+	border:1px solid #6C6B73;
+	margin:10px;
+	padding:10px;
+	width:708px;
+}
+
+/**
+ * Budget pages
+ */
+    #budget-form {
+        margin-left: 20px;
+        padding-top: 10px;
+    }
+    #budget-form span {
+        padding-right: 20px;
+    }
+
+    #budget-table tbody.org-data {
+        font-weight: bold;
+    }
+    #budget-table tbody.user-data {
+        display: none;
+    }
+    #budget-table .org-name {
+        font-weight: normal;
+        cursor: pointer;
+    }
+    #budget-table img.expand {
+        border:0;
+        width: 12px;
+        height: 12px;
+    }
+    #budget-table thead,
+    #budget-table tfoot {
+        font-weight: bold;
+    }
+    #budget-table td, 
+    #budget-table th {
+        white-space: nowrap;
+        padding-right: 2px;
+    }
+
+    #budget-table td {
+        text-align: right !important;
+    }
+    #budget-table td.left {
+        text-align: left !important;
+    }
+
+    #budget-table td.negative {
+        color: red;
+    }
+
+    #budget-graph table tbody td {
+        border: 0 !important;
+    }
+    #budget-graph-image {
+        min-height: 300px;
+    }
+
+.package { background-image:none; background-repeat:no-repeat; min-height:50px; padding-left:50px; }
+.h2 h3 {
+/*background:url("/images/corner-white.gif") no-repeat scroll 0 0 #AECE5B;*/
+font-size:160%;
+padding:0.25em;
+}
+.h2 h3 {
+font-style:normal;
+font-weight:normal;
+line-height:1em;
+margin-top:1m;
+}
+
+.sectionlink { display:none; }
+:hover > .sectionlink { display:inline; }
+
+.bigpoint { background:none repeat scroll 0 0 #FFF0AA; border:1px solid black; font-size:120%; line-height:1.2em; margin:1.2em 1.2em 0; text-align:center; }
+.h2 { margin-left: 1.2em}
+
+#method_copy {
+    margin: 5px 0 0 0;
+}
+
+#method_copy select {
+    font: 11px/11px Arial;
+    border-left: 1px solid #aeb0af;
+    border-right: 1px solid #aeb0af;
+    border-top: 1px solid #999999;
+    border-bottom: 1px solid #dadada;
+    padding: 0;
+    margin: 0;
+}
+
+#runs-list { width: 554px; }
+#runs-list table { float: left; }
+#runs-list div.tableContainer {overflow: hidden; width: 550px;}
+
+#runs-list table,
+#run-details table {
+    width: 520px;
+}
+
+#runs-list table tbody { overflow: auto; height: 300px; width: 100%; display: block; }
+
+#runs-list table thead tr { display: block; position: relative; }
+#runs-list table thead th { width: 234px; }
+#runs-list table thead th + th { width: 143px; }
+#runs-list table thead th + th + th { width: 123px; }
+
+#runs-list table tbody td { width: 234px; }
+#runs-list table tbody td + td { width: 143px; }
+#runs-list table tbody td + td + td { width: 123px; }
+
+
+#run-details table thead th,
+#runs-list table thead th {
+    background: url("images/top_line.gif") repeat-x scroll 0 0 transparent;
+    border-left: 2px solid white;
+    color: #FFFFFF;
+    font-size: 12px;
+    line-height: 15px;
+    padding-left: 10px;
+    text-align: left;
+}
+
+#runs-list table.s3-runs {
+    width: 300px;
+    border-collapse: collapse;
+}
+#runs-list table tr{
+    border: 1px black solid;
+}
+
+
+.not-uploaded, #container div.list table tr td a.not-uploaded, #runs-list td a.not-uploaded {
+    color: red;
+}
+
+#key_dialog input {
+    width: 185px;
+    font: 11px/11px Arial;
+    border-left: 1px solid #aeb0af;
+    border-right: 1px solid #aeb0af;
+    border-top: 1px solid #999999;
+    border-bottom: 1px solid #dadada;
+    padding: 3px 5px;
+    margin-top: 5px
+}
+
+#key_dialog label {
+    font: 12px/12px Arial;
+}
+
+#uploadDialog span.error {
+    color: #FF2448;
+    font-size: 10px;
+}
+
+#uploadDialog span.message {
+    color: green;
+    font-size: 10px;
+}
+
+#copyDialog span.error {
+    color: #FF2448;
+    font-size: 10px;
+}
+
+#copyDialog span.message {
+    color: green;
+    font-size: 10px;
+}
+
+#container form.form2 .classStorageSharing p {
+    clear: both;
+    padding-left: 16px;
+}
+
+#ajax-loader {
+    margin: 20px 0;
+    text-align: center;
+}
+
+#container form.form2 div.fieldset-description {
+    margin-left: 10px;
+    font-size: 11px;
+}
+
+#container form.form2 p.hint {margin-top: 10px; padding: 0 5px 0 139px;}
+
+/* Hints */
+/* The hint to Hide and Show */
+#container form.form2 fieldset div {position: relative; }
+#container form.form2 span.hint {
+   	display: none;
+    position: absolute;
+    color: inherit;
+    right: -200px;
+    width: 200px;
+    margin-top: -4px;
+    border: 1px solid #c93;
+    padding: 10px 12px;
+    /* to fix IE6, I can't just declare a background-color,
+    I must do a bg image, too!  So I'm duplicating the hint-pointer.gif
+    image, and positioning it so that it doesn't show up
+    within the box */
+    background: #ffc url(hint-pointer.gif) no-repeat -10px 5px;
+}
+
+/* The pointer image is hadded by using another span */
+#container form.form2 span.hint .hint-pointer {
+    position: absolute;
+    left: -10px;
+    top: 5px;
+    width: 10px;
+    height: 19px;
+    background: url(hint-pointer.gif) left top no-repeat;
+}
+
+#method_select {
+    font-size: 12px
+}
+
+#container form.form2 fieldset#fieldset-replacement_parameters div label {
+    text-align: left;
+    padding-left: 20px;
+}
+#container form.form2 #replacement_fieldset {
+width:290px
+}
+
+#container form.form2 #replacement_fieldset fieldset div{
+width:290px
+}
+
+#container form.form2 #replacement_fieldset label{
+width: 70px
+}
+
+#container div.invisible_block.replacement {
+    width: 680px
+}
+
+form#result-storage-form.form2 div.errors {
+ color: red;
+ padding-left: 20px;
+}
+
+form#result-storage-form.form2 div.success {
+color:green;
+padding-left: 20px;
+background: none;
+border: none;
+}
+
+form#result-storage-form.form2 div.warning {
+color: black;
+padding-left: 20px;
+background: none;
+border: none;
+}
+
+#container div#tree table {
+    width: auto;
+    margin: 0;
+}
+
+#container div#tree table td {
+    border: none;
+    padding: 0;
+    height: auto;
+}
+
+#container div#results-hint {
+float:right;
+width:700px;
+}
+
+#container div#experiment-form form.form2 textarea {
+    font: 11px/11px Arial;
+    border-left: 1px solid #aeb0af;
+    border-right: 1px solid #aeb0af;
+    border-top: 1px solid #999999;
+    border-bottom: 1px solid #dadada;
+}
+
+.dataset-progressbar {
+    width: 200px;
+    margin: 10px auto !important;
+}
+
+.dataset-progressbar div {
+    margin: -1px !important;
+}
+
+.hidden-iframe {
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
+    height: 50px;
+    width: 50px;
+}
+
+a.instance-name{
+    cursor:text;
+    position:relative; 
+    z-index:24;
+    text-decoration: underline;
+}
+
+/*a.instance-name:hover{z-index:25; }*/
+
+a.instance-name span.tooltip{display: none; line-height: inherit;}
+
+a.instance-name{ cursor: pointer}
+
+a.instance-name:hover {
+    
+}
+/*a.instance-name:hover span.tooltip{ 
+    display:block;
+    position:absolute;
+    top:15px; left:20px; 
+    border:1px solid #7474A8;
+    background-color:white; 
+    color:#000;
+    text-align: left;
+    padding:4px;
+    line-height: 20px;
+}*/
+
+#editInstanceName span {
+    margin-left: 135px;
+    margin-right: 50px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding:0;
+    font-size: 10px;
+    font-style: italic;
+}
+
+#editInstanceName p {
+    font-size: 11px;
+    color: red;
+}
+
+#editInstanceName img {
+    width: 16px;
+    height: 16px;
+    margin: 0 0 0 10px;
+    padding:0;
+}

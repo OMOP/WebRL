@@ -1,0 +1,64 @@
+<?php
+/*================================================================================
+    OMOP - Cloud Research Lab
+
+    Observational Medical Outcomes Partnership
+    24 Jan 2011
+
+    Contains view template for displaying budget chart
+
+    (C)2009-2011 Foundation for the National Institutes of Health (FNIH)
+
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not
+    use this file except in compliance with the License. You may obtain a copy
+    of the License at http://omop.fnih.org/publiclicense.
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. Any
+    redistributions of this work or any derivative work or modification based on
+    this work should be accompanied by the following source attribution: "This
+    work is based on work by the Observational Medical Outcomes Partnership
+    (OMOP) and used under license from the FNIH at
+    http://omop.fnih.org/publiclicense.
+
+    Any scientific publication that is based on this work should include a
+    reference to http://omop.fnih.org.
+
+================================================================================*/
+?>
+<div id="budget-graph">
+    <div id="budget-graph-image" style="width:1100px; height:300px;"></div>
+    <script language="javascript" type="text/javascript">
+    var graph_options = {
+        series: {stack: 1,
+                 lines: {show: false, steps: false},
+                 bars: {show: true, barWidth: 0.2, align: 'center',},},
+        xaxis: {
+			ticks: [<?=$this->ticks?>],
+			tickSize: 3
+		},
+		yaxis: {
+		    //max: 400
+            tickFormatter: function (val) {
+	val += '';
+	x = val.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	return x1;
+}
+
+		},
+
+		legend: {
+    show: true,
+	noColumns: 10
+  }
+};
+    <?=$this->data?>
+    </script>
+</div>

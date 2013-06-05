@@ -1,0 +1,92 @@
+<?php $this->headScript()->appendFile('/js/system_instances.js')?>
+
+<div class="list">
+    <?php echo $this->partial('_round_corners.phtml')?>
+    
+    <form action="" method="get" class="form4" onsubmit="window.location='<?php echo $this->url(array('controller' => 'running-method', 'action' => 'list', 'dir' => $this->sort_dir, 'sort' => $this->sort_column, 'page' => $this->paginator->getCurrentPageNumber()), 'default', true)?>/filter/'+$('#idUser').val();return false;">
+        <fieldset>
+        <legend>User</legend>
+        <div><label for="idUser">User:</label>
+            <select id="idUser" name="user_id">
+            	<option value="0">--None--</option>
+                <?php foreach ($this->users as $user):?>
+                    <option value="<?php echo $user['id']?>" <?php if ($this->user == $user['id']) echo 'selected="selected"'?>><?php echo $user['name']?></option>
+                <?php endforeach ?>
+            </select>
+&nbsp;
+&nbsp;
+&nbsp;
+        <input onmouseover="this.style.backgroundPosition='bottom';" onmouseout="this.style.backgroundPosition='top';" id="button_filter" class="button_80" type="submit" value="Filter" style="background-position: 50% 0%; ">
+        </div>
+        </fieldset>
+    </form>
+    
+    <table cellspacing="0" cellpadding="0" border="0">
+	<thead>
+	<tr>
+        <?php
+        $columns = array();
+        if ($this->adminMode) {
+            $columns[] = array('column_name' => 'Login ID');
+        }
+        $columns = array_merge($columns,
+            array(
+                array('column_name' => 'Method', 'id' => 2),
+                array('column_name' => 'Parameter', 'id' => 3),
+                array('column_name' => 'Start Date', 'id' => 4),
+                array('column_name' => 'Complete Date', 'id' => 5),
+                array('column_name' => 'Instance', 'id' => 6),
+                array('column_name' => 'Status', 'id' => 7)
+            )
+        );
+        echo $this->partialLoop('_column_header.phtml', $columns);
+        ?>
+	</tr>
+	</thead>
+	<tfoot>
+        <tr>
+            <th colspan="<?=$this->adminMode?'7':'6'?>">
+                <?php echo $this->paginator ?>
+            </th>
+        </tr>
+	</tfoot>
+    <?php $user = Membership::get_current_user();?>
+    <tbody>
+        <?php foreach($this->paginator as $entry): ?>
+        <tr>
+            <?php if ($this->adminMode) : ?>
+            <td>
+                <a href="<?php echo $this->url(array('controller' => 'user', 'action' => 'edit', 'id' => $entry['ownerId']))?>"><?php echo $this->escape($entry['ownerLogin'])?></a>
+            </td>
+            <?php endif; ?>
+
+            <td>
+                <?php echo $this->escape($entry['name'])?>
+            </td>
+            <td>
+                <?php echo $this->escape($entry['parameter']) ? $this->escape($entry['parameter']) : 'All'?>
+            </td>
+            <td>
+                <?php echo $this->dateFormat($this->escape($entry['startDate']))?>
+            </td>
+            <td>
+                <?php echo $this->dateFormat($this->escape($entry['completeDate']))?>
+            </td>
+            <td>
+                <?php echo $this->escape($entry['instanceName'])?>
+            </td>
+            <td>
+                <?php if ($entry['status'] == 'A') echo "Running"; 
+                      elseif ($entry['status'] == 'S') echo "Completed";
+                      elseif ($entry['status'] == 'N') echo "Starting";
+                      elseif ($entry['status'] == 'F') echo "Failed";
+                      elseif ($entry['status'] == 'P') echo "Paused";
+                      elseif ($entry['status'] == 'T') echo "Terminated";
+                      elseif ($entry['status'] == 'W') echo "Completed/Terminated";
+                      else echo "Unknown" ?>
+            </td>
+        </tr>
+		<? endforeach ?>
+	</tbody>
+    </table>
+</div>

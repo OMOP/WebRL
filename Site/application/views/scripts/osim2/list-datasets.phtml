@@ -1,0 +1,95 @@
+<?php 
+/*==============================================================================
+    OMOP - Cloud Research Lab
+
+    Observational Medical Outcomes Partnership
+    10 Mar 2011
+
+    Page view for displaying list of summary sets.
+
+    (c)2009-2011 Foundation for the National Institutes of Health (FNIH)
+
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not
+    use this file except in compliance with the License. You may obtain a copy
+    of the License at http://omop.fnih.org/publiclicense.
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. Any
+    redistributions of this work or any derivative work or modification based on
+    this work should be accompanied by the following source attribution: "This
+    work is based on work by the Observational Medical Outcomes Partnership
+    (OMOP) and used under license from the FNIH at
+    http://omop.fnih.org/publiclicense.
+
+    Any scientific publication that is based on this work should include a
+    reference to http://omop.fnih.org.
+
+==============================================================================*/
+?>
+
+<div class="list">
+    <?php echo $this->partial('_round_corners.phtml')?>
+    <table cellspacing="0" cellpadding="0" border="0" 
+        id="osim2-datasets-table">
+        <thead>
+        <tr>
+            <?php
+            $columns = array(
+               array('column_name' => 'Id'),
+               array('column_name' => 'Dataset Abbr'),
+               array('column_name' => 'Description'),
+               array('column_name' => 'Patients Qty'),
+               array('column_name' => 'Has Signal?'),
+               array('column_name' => 'Created By'),
+               array('column_name' => 'Created'),
+            );
+            echo $this->partialLoop('_column_header.phtml', $columns);
+        ?>
+        </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th colspan="5">
+                    <?php echo $this->paginator ?>
+                </th>
+            </tr>
+        </tfoot>
+        <tbody>
+            <?php 
+            foreach ($this->paginator as $entry) {
+                $id = $entry['OSIM2_SOURCE_ID'];
+                $entity = new Application_Model_Osim2SimulationSource();
+                $entity->find($id);
+                $name = $entity->getName();
+                $description = $entity->getDescription();
+                $patientsQty = $entity->getPatientQty();
+                $hasSignal = $entity->getHasSignal();
+                $status = $entity->getStatus();
+                $createdBy = $entity->getCreatedBy();
+                $created = $entity->getCreated();
+                
+                $detailsAction = $this->url(
+                    array('action' => 'view-table', 'id' => $id)
+                );
+                $updateAction = $this->url(
+                    array('action' => 'update-summary', 'id' => $id)
+                );
+            ?>
+            <tr>
+                <td style="text-align:right">
+                    <?php echo $this->escape($id)?>
+                </td>
+                <td><?php echo $this->escape($name)?></td>
+                <td><?php echo $this->escape($description)?></td>
+                <td><?php echo $this->escape($patientsQty)?></td>
+                <td><?php echo $hasSignal ? 'Yes' : 'No' ?></td>
+                <td><?php echo $this->escape($createdBy)?></td>
+                <td><?php echo $this->dateFormat($created)?></td>
+            </tr>
+            <?php
+            } 
+            ?>
+        </tbody>
+    </table>
+</div>

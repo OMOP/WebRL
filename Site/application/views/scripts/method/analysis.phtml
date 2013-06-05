@@ -1,0 +1,94 @@
+<?php $this->headScript()->appendFile('/js/jquery-ui-1.7.3.custom.min.js'); ?>
+<?php $this->headScript()->appendFile('/js/ajaxfileupload.js'); ?>
+<?php $this->headScript()->appendFile('/js/method_analysis.js'); ?>
+<?php $this->headLink()->appendStylesheet('/css/jquery/smoothness/jquery-ui-1.7.3.custom.css');?>
+<?php $this->headScript()->captureStart();?>
+$(document).ready(function() {
+    $('#method_select').change(function() {
+        window.location.href = $(this).val();
+    });
+});
+<?php $this->headScript()->captureEnd();?>
+<div class="clear"></div>
+<div class="list">
+    <?php echo $this->partial('_round_corners.phtml')?>
+    <input onmouseover="this.style.backgroundPosition='bottom';" onmouseout="this.style.backgroundPosition='top';"
+        id="button_upload" class="button_105" style="float:right; margin: 10px 10px 0 0"
+        type="button" value="Upload Analysis" onclick="$('#uploadDialog').dialog('open')" />
+    <input onmouseover="this.style.backgroundPosition='bottom';" onmouseout="this.style.backgroundPosition='top';"
+        id="button_copy" class="button_105" style="float:right; margin: 10px 10px 0 0"
+        type="button" value="Copy Analysis" onclick="$('#copyDialog').dialog('open')" />
+    <?php echo $this->partial('method/_select_method.phtml');?>
+    <div style="overflow-x:scroll;width:1120px;margin:0px 0 15px 10px;">
+    <table cellspacing="0" cellpadding="0" border="0">
+	<thead>
+	<tr>
+        <?php
+            $columns = array(
+               array('column_name' => 'Id'),
+               array('column_name' => 'Method Id'),
+               array('column_name' => 'Method Abbr'),
+               array('column_name' => 'Run Id'),
+               array('column_name' => 'Run Name'),
+               array('column_name' => 'Configuration Id'),
+               array('column_name' => 'Output File Name'),
+               array('column_name' => 'Triage VS Full'),
+            );
+            $params = array();
+            for ($i = 1; $i <= 25; $i += 1)
+                $params[] = array('column_name' => 'Parameter '.$i);
+            $columns = array_merge($columns, $params);
+            echo $this->partialLoop('_column_header.phtml', $columns);
+        ?>
+	</tr>
+	</thead>
+
+    <tbody>
+        <?php foreach($this->data as $entry): ?>
+        <tr>
+			<td class="right"><?php echo $this->escape($entry->getId())?></td>
+            <td class="right"><?php echo $this->escape($entry->getMethodId())?></td>
+            <td><?php echo $this->escape($entry->getMethodAbbrv())?></td>
+            <td class="right"><?php echo $this->escape($entry->getRunId())?></td>
+            <td><?php echo $this->escape($entry->getRunName())?></td>
+            <td class="right"><?php echo $this->escape($entry->getConfigurationId())?></td>
+            <td><?php echo $this->escape($entry->getOutputFileName())?></td>
+            <td class="right"><?php echo $this->escape($entry->getTriageVSFull())?></td>
+            <?php for ($i = 1; $i <= 25; $i += 1): ?>
+            <td><?php echo $this->escape($entry->getParam($i))?></td>
+            <?php endfor ?>
+        </tr>
+		<? endforeach ?>
+	</tbody>
+    </table>
+    </div>
+</div>
+<div id="uploadDialog" style="display:none">
+    <div id="analysisFile">
+        <input type="hidden" name="methodId" id="hiddenId" value="<?php echo $this->selectedMethod?>"/>
+        <input type="file" name="analysis"/>
+        <div>
+            <label for="overwriteFlag">Overwrite existing values?</label>
+            <input type="checkbox" name="overwrite" id="overwriteUFlag" value="1"/>
+        </div>
+    </div>
+    <div id="uploadHint" style="display:none">
+        File is uploading, please wait...
+    </div>
+</div>
+
+<div id="copyDialog" style="display:none">
+        <input type="hidden" name="to" id="hiddenId" value="<?php echo $this->selectedMethod?>"/>
+        <div>
+            <label for="copyFrom">Choose method to copy from:</label>
+            <select name="from" id="copyFrom">
+            <?php foreach ($this->methods as $id => $abbr): ?>
+                <option value="<?php echo $id ?>"><?php echo $abbr ?></option>
+            <?php endforeach ?>           
+            </select>
+        </div>
+        <div>
+            <label for="overwriteFlag">Overwrite existing values?</label>
+            <input type="checkbox" name="overwrite" id="overwriteFlag" value="1"/>
+        </div>
+</div>

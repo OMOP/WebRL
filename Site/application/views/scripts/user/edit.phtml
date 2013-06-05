@@ -1,0 +1,21 @@
+<?php $this->headStyle()->captureStart()?>
+#sharesStorageTo { width: 150px; }
+<?php $this->headStyle()->captureEnd()?>
+<?php $this->headScript()->captureStart()?>
+$(document).ready(function() {
+    $('#organizationId').change(function() {
+        if ($(this).val() != 0)
+            $('label[for=orgAdmin]').text('Is Org Admin?:');
+        else
+            $('label[for=orgAdmin]').text('Is Sys Admin?:');
+    })
+})
+<?php $this->headScript()->captureEnd()?>
+
+<div class="invisible_block <?php if (isset($this->form->sharing)) echo "invisible_block_3columns"?>">
+    
+<?php echo $this->form?>
+</div>
+<script>
+$(".load_res_acc").parent().css('padding-bottom', '10px');
+</script>

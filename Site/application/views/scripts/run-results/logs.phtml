@@ -1,0 +1,77 @@
+<?php
+/*================================================================================
+    OMOP - Cloud Research Lab
+
+    Observational Medical Outcomes Partnership
+    09 March 2011
+
+    Contains view template for displaying the Run Results uploading logs
+
+    (C)2009 Foundation for the National Institutes of Health (FNIH)
+
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not
+    use this file except in compliance with the License. You may obtain a copy
+    of the License at http://omop.fnih.org/publiclicense.
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. Any
+    redistributions of this work or any derivative work or modification based on
+    this work should be accompanied by the following source attribution: "This
+    work is based on work by the Observational Medical Outcomes Partnership
+    (OMOP) and used under license from the FNIH at
+    http://omop.fnih.org/publiclicense.
+
+    Any scientific publication that is based on this work should include a
+    reference to http://omop.fnih.org.
+
+================================================================================*/
+?>
+<style type="text/css">
+table tbody tr td {
+    vertical-align: top;
+}
+
+div.paginator {
+    width: 1120px;
+    text-align: right
+}
+div.paginator a {
+    color: #7474a8;
+    margin: 0 0 0 10px;
+    text-decoration: none;
+}
+</style>
+
+<div class="clear"></div>
+<div class="list">
+    <?php echo $this->partial('_round_corners.phtml')?>
+    <div class="paginator"><?php echo $this->paginator ?></div>
+    <table cellspacing="0" cellpadding="0" border="0">
+        <thead>
+        <tr>
+        <?php echo $this->partialLoop('_column_header.phtml', $this->columns); ?>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <th colspan="7"><?php echo $this->paginator ?></th>
+        </tr>
+        </tfoot>
+
+        <tbody>
+        <?php foreach($this->paginator as $entry): ?>
+        <tr>
+            <td><?php echo $this->escape($entry['user_name'])?></td>
+            <td><?php echo $this->dateFormat($this->escape($entry['added']))?></td>
+            <td><?php echo $this->escape($entry['dataset'])?></td>
+            <td><?php echo $this->escape($entry['method'])?></td>
+            <td><?php echo str_replace($this->runSeparator, '<br/ >', $this->escape($entry['runs']))?></td>
+            <td><input type="checkbox" disabled="disabled" <?php echo $entry['is_loaded_s3'] ? 'checked="checked"' : ''?>/></td>
+            <td><input type="checkbox" disabled="disabled" <?php echo $entry['is_loaded_oracle'] ? 'checked="checked"' : ''?>/></td>
+            <td><?php echo ($entry['error'] ? $entry['error']:'Loaded')?></td>
+        </tr>
+		<? endforeach ?>
+        </tbody>
+    </table>
+</div>

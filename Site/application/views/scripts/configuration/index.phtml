@@ -1,0 +1,49 @@
+<div class="list">
+    <?php echo $this->render('_round_corners.phtml')?>
+	<table cellspacing="0" cellpadding="0">
+		<tr>
+			<td><a href="<?php echo $this->url(array('controller' => 'site-setup'), 'default', true) ?>" title="Site Setup">Site Setup</a></td>
+			<td>Site configuration and sending email to active users</td>
+		</tr>
+		<tr>
+			<td><a href="<?php echo $this->url(array('controller' => 'instance-launch-defaults'), 'default', true) ?>" title="Instance launch defaults">Instance launch defaults</a></td>
+			<td>Administrator can configure defaults for instance launch process: Default User Settings EBS, Default Temporary Storage EBS</td>
+		</tr>
+		<tr>
+			<td><a href="<?php echo $this->url(array('controller' => 'dataset'), 'default', true) ?>" title="Configure Datasets">Configure Datasets</a></td>
+			<td>On this page administrator can configure existing datasets and create new.</td>
+		</tr>
+		<tr>
+			<td><a href="<?php echo $this->url(array('controller' => 'software-type'), 'default', true); ?>" title="Configure Images">Configure Images</a></td>
+			<td>Administrator can configure existing images for tools and create new.</td>
+		</tr>
+		<tr>
+			<td><a href="<?php echo $this->url(array('controller' => 'temporary-storage'), 'default', true) ?>" title="Configure Temporary Storage">Configure Temporary Storage</a></td>
+			<td>Administrator can configure existing temporary storages and create new.</td>
+		</tr>
+		<tr>
+			<td><a href="<?php echo $this->url(array('controller' => 'system-instance'), 'default', 'true') ?>" title="Configure System Instances">Configure System Instances</a></td>
+			<td>Administrator can configure existing system instances and create new.</td>
+		</tr>
+        <tr>
+            <td><a href="<?php echo $this->url(array('controller' => 'storage-instance'), 'default', 'true') ?>" title="Configure Storage Instances">Configure Storage Instances</a></td>
+            <td>Administrator can configure existing storage instances and create new.</td>
+        </tr>
+		<tr>
+			<td><a href="<?php echo $this->url(array('controller' => 'method', 'action' => 'list')) ?>" title="Methods">Methods</a></td>
+			<td>Add/Modify method reference.</td>
+		</tr>
+		<tr>
+			<td><a href="<?php echo $this->url(array('controller' => 'methodreplacement', 'action' => 'list')) ?>" title="HOI/DOI sets">HOI/DOI parameters</a></td>
+			<td>Add/Modify custom HOI/DOI sets for method runs.</td>
+		</tr>
+		<tr>
+			<td><a href="<?php echo $this->url(array('controller' => 'source', 'action' => 'list')) ?>" title="Sources">Sources</a></td>
+			<td>Add/Modify sources for method runs.</td>
+		</tr>
+		<tr>
+			<td><a href="<?php echo $this->url(array('controller' => 'experiment', 'action' => 'list')) ?>" title="Experiments">Experiments</a></td>
+			<td>Add/Modify experiments for method runs.</td>
+		</tr>
+	</table>
+</div>

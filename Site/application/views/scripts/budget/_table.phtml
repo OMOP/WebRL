@@ -1,0 +1,129 @@
+<?php
+/*================================================================================
+    OMOP - Cloud Research Lab
+
+    Observational Medical Outcomes Partnership
+    24 Jan 2011
+
+    Contains view template for displaying budget table
+
+    (C)2009-2011 Foundation for the National Institutes of Health (FNIH)
+
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not
+    use this file except in compliance with the License. You may obtain a copy
+    of the License at http://omop.fnih.org/publiclicense.
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. Any
+    redistributions of this work or any derivative work or modification based on
+    this work should be accompanied by the following source attribution: "This
+    work is based on work by the Observational Medical Outcomes Partnership
+    (OMOP) and used under license from the FNIH at
+    http://omop.fnih.org/publiclicense.
+
+    Any scientific publication that is based on this work should include a
+    reference to http://omop.fnih.org.
+
+================================================================================*/
+?>
+<table id="budget-table" cellpadding="0" cellspacing="0">
+<thead>
+    <tr>
+        <th>&nbsp;</th>
+        <th>&nbsp;</th>
+        <?php foreach ($this->tplMonths as $m): ?>
+            <th colspan="2" class="month-group"><?=$m?></th>
+        <?php endforeach; ?>
+        <th colspan="2" class="month-group" style="text-align: center">Budget</th>
+        <th colspan="2" class="month-group" style="text-align: center">Current</th>
+    </tr>
+    <tr>
+        <th>Organization</th>
+        <th>Users/Instances</th>
+        <?php foreach ($this->months as $m): ?>
+            <th class="month-group">Charged ($)</th>
+            <th>Num Instances</th>
+        <?php endforeach; ?>
+
+        <th class="month-group">Limit ($)</th>
+        <th>Num Instances</th>
+
+        <th class="month-group">Remaining ($)</th>
+        <th>Active Instances</th>
+    </tr>
+</thead>
+
+<?php foreach ($this->organizations as $k=>$o): ?>
+<?php if ('totals' != $k): ?>
+<tbody class="org-data">
+    <tr>
+        <td title="<?=$o['name']?>" class="org-name left">
+            <?php if (count($o['users']) > 0): ?>
+            <img class="expand" src="/images/table-plus.png" />
+            <?php endif; ?>
+            <?php echo $o['name'] ? htmlspecialchars($o['name']) : '&nbsp;'; ?>
+        </td>
+        <td></td>
+        <?php foreach ($this->months as $m): ?>
+            <td><?php echo number_format($o['totals'] [$m] ['charge']); ?></td>
+            <td><?php echo number_format($o['totals'] [$m] ['instances']); ?></td>
+        <?php endforeach; ?>
+        <td><?php echo number_format($o['totals'] ['budget'] ['limit']); ?> </td>
+        <td><?php echo number_format($o['totals'] ['budget'] ['instances']); ?> </td>
+        <td <?php echo $o['totals'] ['current'] ['remaining'] < 0 ? 'class="negative"' : ''; ?>>
+            <?php echo number_format($o['totals'] ['current'] ['remaining']); ?>
+        </td>
+        <td><?php echo number_format($o['totals'] ['current'] ['instances']); ?> </td>
+    </tr>
+</tbody>
+<tbody class="user-data">
+    <?php foreach ($o['users'] as $ku=>$user): ?>
+    <?php 
+    if ('name' == $ku) {
+        continue;
+    }
+    ?>
+    <tr>
+        <td></td>
+        <?php 
+        if ($this->oranizationPrefix.'system' == $k) {
+            $link = $this->url(array('controller' => 'system-instance', 'action' => 'edit', 'id' => $ku));
+        } else {
+            $link = $this->url(array('controller' => 'user', 'action' => 'edit', 'id' => $ku));
+        }
+        ?>
+        <td class="left"><a href="<?=$link?>"><?=$user['name']?></a></td>
+        <?php foreach ($this->months as $mu): ?>
+        <td><?php echo number_format($user[$mu] ['charge']); ?></td>
+        <td><?php echo number_format($user[$mu] ['instances']); ?></td>
+        <?php endforeach; ?>
+        <td><?php echo number_format($user['budget'] ['limit']); ?></td>
+        <td><?php echo number_format($user['budget'] ['instances']); ?></td>
+        <td <?php echo $user['current'] ['remaining'] < 0 ? 'class="negative"' : ''; ?> >
+            <?php echo number_format($user['current'] ['remaining']); ?>
+        </td>
+        <td><?php echo number_format($user['current'] ['instances']); ?></td>
+    </tr>
+    <?php endforeach; ?>
+</tbody>
+<?php endif; ?>
+<?php endforeach; ?>
+
+<tfoot>
+    <tr>
+        <td class="left">Total:</td>
+        <td>&nbsp;</td>
+        <?php foreach ($this->months as $m): ?>
+            <td><?php echo number_format($this->organizations['totals'] [$m] ['charge']); ?></td>
+            <td><?php echo number_format($this->organizations['totals'] [$m] ['instances']); ?></td>
+        <?php endforeach; ?>
+        <td><?php echo number_format($this->organizations['totals'] ['budget'] ['limit']); ?></td>
+        <td><?php echo number_format($this->organizations['totals'] ['budget'] ['instances']); ?></td>
+        <td <?php echo $this->organizations['totals'] ['current'] ['remaining'] < 0 ? 'class="negative"' : ''; ?> >
+            <?php echo number_format($this->organizations['totals'] ['current'] ['remaining']); ?>
+        </td>
+        <td><?php echo number_format($this->organizations['totals'] ['current'] ['instances']); ?></td>
+    </tr>
+</tfoot>
+</table>

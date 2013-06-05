@@ -1,0 +1,50 @@
+<div class="list">
+    <?php echo $this->partial('_round_corners.phtml')?>
+    <table cellspacing="0" cellpadding="0" border="0">
+	<thead>
+	<tr>
+        <?php
+            $columns = array(
+               array('column_name' => 'Name'),
+               array('column_name' => 'Host'),
+               array('column_name' => 'ID'),
+               array('column_name' => 'Login ID'),
+               array('column_name' => 'Start Date'),
+               array('column_name' => 'Instance Type'),
+               array('column_name' => 'Dataset'),
+               array('column_name' => 'Image'),
+               array('column_name' => 'Details'),
+            );
+            echo $this->partialLoop('_column_header.phtml', $columns);
+        ?>
+	</tr>
+	</thead>
+	<tfoot>
+        <tr>
+            <th colspan="7">
+                <?php echo $this->paginator ?>
+            </th>
+        </tr>
+	</tfoot>
+
+    <tbody>
+        <?php foreach($this->instances as $entry): ?>
+        <tr>
+            <td>
+            <a class="tooltip_handle" href="#" onclick="return false;"><?php echo $this->truncate($this->escape($entry->assigned_name), 20)?><span class="tooltip"><?php echo $this->escape($entry->assigned_name)?></span></a>            
+            </td>
+            <td><?php echo $this->escape($entry->public_dns) ?></td>
+            <td><?php echo $this->escape($entry->amazon_instance_id)?></td>
+            <td><a href="<?php echo '/index.php?page=edit_user&action='.$entry->instance_request->user_id?>"><?php echo $entry->instance_request->user->login_id?></a></td>
+            <td><?php echo $this->dateFormat($entry->start_date)?></td>
+            <td><?php echo $this->escape($entry->instance_request->instance_size->instance_size_name)?></td>
+            <td><a class="tooltip_handle" href="#" onclick="return false;"><?php echo $this->truncate($this->escape($entry->instance_request->dataset_types_description), 10)?><span class="tooltip"><?php echo $this->escape($entry->instance_request->dataset_types_description)?></span></a></td>
+            <td><?php echo $entry->instance_request->software_type->software_type_description?></td>
+            <td><a href="<?php echo $this->url(array('action' => 'details', 'id' => $entry->amazon_instance_id))?>">Details</a></td>
+            
+            
+        </tr>
+		<? endforeach ?>
+	</tbody>
+    </table>
+</div>

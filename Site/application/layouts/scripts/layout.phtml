@@ -1,0 +1,49 @@
+<?php echo $this->doctype(); ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <?php echo $this->headMeta(); ?>
+    	<?php echo $this->headTitle(); ?>
+    	<?php echo $this->headLink(); ?>
+    	<?php echo $this->headScript(); ?>
+    	<?php echo $this->headStyle(); ?>
+    </head>
+	<body>
+        <div id="all">
+            <div id="header">
+                <div class="head_block_small" style="padding: 0 175px 0 0; ">
+                    <h1><?php
+                    $current_user = Membership::get_current_user();
+                    $user_name = $current_user?($current_user->first_name . ' '. $current_user->last_name):'NOT IMPLEMENTED YET';
+                    if (Membership::get_app_mode() == ApplicationMode::Admin) {
+                        echo $this->escape($user_name);
+                    } else {
+                        echo '<a href="/index.php?page=edit_account">' . $this->escape($user_name) . '</a>';
+                    }
+                    ?></h1>
+                    <p><a href="<?php echo PageRouter::build('login','logout');?>" title="log out">log out</a></p>
+                </div>
+            <div class="head_block_big">
+                <a href="<?php echo $this->url(array('controller' => 'instance', 'action' => 'index'))?>" title="OBSERVATIONAL MEDICAL OUTCOMES PARTNERSHIP"><img src="/images/logo.gif" width="110" height="27" alt="OBSERVATIONAL MEDICAL OUTCOMES PARTNERSHIP" /></a>
+                <h1>Research Lab</h1>
+            </div>
+            <div class="logo">
+                <a href="http://omop.fnih.org" title="OBSERVATIONAL MEDICAL OUTCOMES PARTNERSHIP"><img src="/images/logo_OMOP.gif" width="416" height="33" alt="OBSERVATIONAL MEDICAL OUTCOMES PARTNERSHIP" /></a>
+            </div>
+            </div>
+            <div id="container">
+                <?php echo $this->placeholder('pageTitle') ?>
+                <?php echo $this->navigation()->menu()->setMaxDepth(0)?>
+                <div class="clear"></div>
+                <?php echo $this->layout()->content; ?>
+                <div class="clear"></div>
+
+            </div>
+            <div id="footer">
+                <p>Questions or comments regarding <?php echo $this->config->product_name()?> may be directed to
+                <?php echo $this->emailProtection($this->config->support_mail(), $this->config->displayed_support_mail())?>
+                or call <?php echo $this->config->support_phone()?></p>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,73 @@
+<?php 
+/*================================================================================
+    OMOP - Cloud Research Lab
+
+    Observational Medical Outcomes Partnership
+    25 Dec 2010
+
+    List HOI/DOI definitions
+
+    (c)2009-2010 Foundation for the National Institutes of Health (FNIH)
+
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not
+    use this file except in compliance with the License. You may obtain a copy
+    of the License at http://omop.fnih.org/publiclicense.
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. Any
+    redistributions of this work or any derivative work or modification based on
+    this work should be accompanied by the following source attribution: "This
+    work is based on work by the Observational Medical Outcomes Partnership
+    (OMOP) and used under license from the FNIH at
+    http://omop.fnih.org/publiclicense.
+
+    Any scientific publication that is based on this work should include a
+    reference to http://omop.fnih.org.
+
+================================================================================*/
+?>
+<div class="clear"></div>
+<div class="list">
+    <?php echo $this->partial('_round_corners.phtml')?>
+    <table cellspacing="0" cellpadding="0" border="0">
+	<thead>
+	<tr>
+        <?php
+            $columns = array(
+               array('column_name' => 'Name'),
+               array('column_name' => 'Owner'),
+               array('column_name' => 'Public/Private'),
+            );
+            echo $this->partialLoop('_column_header.phtml', $columns);
+        ?>
+	</tr>
+	</thead>
+	<tfoot>
+        <tr>
+            <th colspan="7">
+                <?php echo $this->paginator ?>
+            </th>
+        </tr>
+        <tr>
+	    <th colspan="7">
+	    <input onmouseover="this.style.backgroundPosition='bottom';" onmouseout="this.style.backgroundPosition='top';"
+            id="button_new_dataset" class="button_105"
+            type="button" value="Add HOI/DOI" onclick="window.location='<?php echo $this->url(array('action' => 'add'))?>'" />
+            </th>
+        </tr>
+	</tfoot>
+
+    <tbody>
+        <?php foreach($this->paginator as $entry): ?>
+        <tr>
+            <td><a href="<?php echo $this->url(array('action' => 'edit', 'id' => $entry['id']))?>"><?php echo $this->escape($entry['name'])?></a></td>
+			<td><?php
+			    echo $this->escape($entry['login_id']);
+			 ?></td>
+			<td><?php echo $this->escape($entry['shared_flag']) ? 'Public' : 'Private'?></td>
+        </tr>
+		<? endforeach ?>
+	</tbody>
+    </table>
+</div>

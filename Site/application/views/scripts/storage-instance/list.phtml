@@ -1,0 +1,85 @@
+<?php $this->headScript()->appendFile('/js/jquery-ui-1.7.3.custom.min.js')?>
+<?php $this->headScript()->appendFile('/js/system_instances.js')?>
+<?php $this->headLink()->appendStylesheet('/css/jquery/smoothness/jquery-ui-1.7.3.custom.css');?>
+
+<div class="list">
+    <?php echo $this->partial('_round_corners.phtml')?>
+    <table cellspacing="0" cellpadding="0" border="0">
+	<thead>
+	<tr>
+        <?php
+            $columns = array(
+               array('column_name' => 'Name'),
+               array('column_name' => 'Connect', 'sortable' => false),
+               array('column_name' => 'Host'),
+               array('column_name' => 'Key Name'),
+               array('column_name' => 'Instance Type'),
+               array('column_name' => 'OS Family'),
+            );
+            echo $this->partialLoop('_column_header.phtml', $columns);
+        ?>
+	</tr>
+	</thead>
+	<tfoot>
+        <tr>
+            <th colspan="9">
+                <?php echo $this->paginator ?>
+            </th>
+        </tr>
+        <tr>
+	    <th colspan="9">
+	    <?php
+	    $addUrl = $this->url(array('action' => 'add')); 
+	    ?>
+	    <input onmouseover="this.style.backgroundPosition='bottom';" onmouseout="this.style.backgroundPosition='top';"
+            id="button_new_dataset" class="button_105"
+            type="button" value="Add Instance" onclick="window.location='<?php echo $addUrl;?>'" />
+            </th>
+        </tr>
+	</tfoot>
+    <?php $user = Membership::get_current_user();?>
+    <tbody>
+        <?php foreach ($this->paginator as $entry) { 
+            $id = $entry['id'];
+            $editUrl = $this->url(array('action' => 'edit', 'id' => $id));
+            $name = $this->escape($entry['name']);
+            if (preg_match('/Windows/i', $_SERVER['HTTP_USER_AGENT'])) {
+                $sshTitle = "PuTTY";
+            } else {
+                $sshTitle = "SSH";
+            }
+            $isMac = preg_match('/Mac/i', $_SERVER['HTTP_USER_AGENT']);
+            $baseLink = '4cf917a05841c-'.$user->internal_id.'@'.$_SERVER['HTTP_HOST'].'/'.$name;
+            $omopLink = 'omop://'.$baseLink;
+            $omopfLink = 'omopf://'.$baseLink;
+        ?>
+        <tr>
+			<td><a href="<?php echo $editUrl;?>"><?php echo $name; ?></a></td>
+			<td>
+            <a href="#" title="<?php echo $sshTitle?> connect to <?php echo $name?>">
+                <img src="/images/putty.jpg" 
+                    alt="Connect" 
+                    onclick="show_key_dialog('<?php echo $omopLink; ?>')"/>
+            </a>
+			<?php if (!$isMac) : ?>
+			<a href="#" title="WinSCP connect to <?php echo $name ?>">
+                <img src="/images/WinSCP.png" 
+                    alt="Transfer files" 
+                    onclick="show_key_dialog('<?php echo $omopfLink; ?>')"/>
+			</a>
+			<?php endif?>
+            </td>
+			<td><?php echo $this->escape($entry['host'])?></td>
+			<td><?php echo $this->escape($entry['keyName'])?></td>
+			<td><?php echo $this->escape($entry['instanceType'])?></td>
+			<td><?php echo ucfirst($this->escape($entry['osFamily']))?></td>
+        </tr>
+		<? } // end foreach ?>
+	</tbody>
+    </table>
+</div>
+
+<div id="key_dialog" style="display:none">
+<label for="key_file">Enter a path for certificate:</label>
+<input type="text" id="key_file"/>
+</div>

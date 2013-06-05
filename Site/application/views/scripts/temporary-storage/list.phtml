@@ -1,0 +1,51 @@
+<div class="list">
+    <?php echo $this->partial('_round_corners.phtml', array('title' => 'Snapshots List'))?>
+    <table cellspacing="0" cellpadding="0" border="0">
+	<thead>
+	<tr>
+        <?php
+            $columns = array(
+               array('column_name' => 'Description', 'sortable' => false),
+               array('column_name' => 'Sort Order', 'sortable' => false),
+               array('column_name' => 'Default Flag', 'sortable' => false),
+               array('column_name' => 'EBS Snapshot', 'sortable' => false),
+               array('column_name' => 'Snapshot Size', 'sortable' => false),
+               array('column_name' => 'Actions')
+            );
+            echo $this->partialLoop('_column_header.phtml', $columns);
+        ?>
+	</tr>
+	</thead>
+	<tfoot>
+        <tr>
+            <th colspan="6">
+                <?php echo $this->paginator ?>
+            </th>
+        </tr>
+        <tr>
+	    <th colspan="6">
+	    <input onmouseover="this.style.backgroundPosition='bottom';" onmouseout="this.style.backgroundPosition='top';"
+            id="button_new_dataset" class="button_185"
+            type="button" value="Add Temporary EBS" onclick="window.location='<?php echo $this->url(array('action' => 'add'))?>'" />
+            </th>
+        </tr>
+	</tfoot>
+
+    <tbody>
+        <?php foreach($this->paginator as $entry): ?>
+        <tr>
+			<td><a href="<?php echo $this->url(array('action' => 'edit', 'id' => $entry['id']))?>"><?php echo $this->escape($entry['description'])?></a></td>
+			<td class="right"><?php echo $this->escape($entry['sortOrder'])?></td>
+			<td><?php if ($entry['defaultFlag']) echo 'Default'?></td>
+			<td><?php echo $this->escape($entry['ebs'])?></td>
+			<td class="right"><?php echo $this->escape($entry['ebsSize'])?></td>
+            <td class="center">
+                <a href="<?php echo $this->url(array('action' => 'delete', 'id' => $entry['id']))?>" onclick="javascript:return confirm('Do you really want delete \'<?php echo $this->escape($entry['description'])?>\'?')" title="Delete Snapshot">
+                    <img src="/images/trash.gif"/>
+                </a>
+            </td>
+        </tr>
+		<? endforeach ?>
+	</tbody>
+    </table>
+</div>

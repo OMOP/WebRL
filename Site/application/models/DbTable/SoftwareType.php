@@ -1,0 +1,58 @@
+<?php
+/*==============================================================================
+    OMOP - Cloud Research Lab
+
+    Observational Medical Outcomes Partnership
+    03 Feb 2011
+
+    Zend_Db_Table class for software_type_tbl table.
+
+    (c)2009-2010 Foundation for the National Institutes of Health (FNIH)
+
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not
+    use this file except in compliance with the License. You may obtain a copy
+    of the License at http://omop.fnih.org/publiclicense.
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. Any
+    redistributions of this work or any derivative work or modification based on
+    this work should be accompanied by the following source attribution: "This
+    work is based on work by the Observational Medical Outcomes Partnership
+    (OMOP) and used under license from the FNIH at
+    http://omop.fnih.org/publiclicense.
+
+    Any scientific publication that is based on this work should include a
+    reference to http://omop.fnih.org.
+
+==============================================================================*/
+class Application_Model_DbTable_SoftwareType extends Zend_Db_Table_Abstract
+{
+
+    protected $_name = 'software_type_tbl';
+    protected $_primary = 'software_type_id';
+    
+    
+    public function getNewSortOrder()
+    {
+        $select = $this->select()->from($this, 'max(sort_order)')
+                                 ->where('active_flag = 1');
+        $id = $this->getAdapter()->fetchOne($select);
+        return $id + 1;
+    }    
+    
+    
+    public function getList($active = false) {
+        $db = $this->getAdapter();
+        $columns = array('software_type_id', 'software_type_description');
+        $select = $this->select()
+                ->from($this, $columns)
+                ->order('sort_order');
+        if ($active) {
+            $select->where('active_flag <> 0');
+        }
+        $datasets = $db->fetchPairs($select);
+        return $datasets;
+    }
+    
+}

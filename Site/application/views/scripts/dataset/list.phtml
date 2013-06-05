@@ -1,0 +1,74 @@
+<div class="list">
+    <?php echo $this->partial('_round_corners.phtml', array('title' => 'Datasets List'))?>
+    <table cellspacing="0" cellpadding="0" border="0">
+	<thead>
+	<tr>
+        <?php
+            $columns = array(
+               array('column_name' => 'Description', 'sortable' => false),
+               array('column_name' => 'Sort Order', 'sortable' => false),
+               array('column_name' => 'Default Flag', 'sortable' => false),
+               array('column_name' => 'Storage Type', 'sortable' => false),
+               array('column_name' => 'Bucket Name', 'sortable' => false),
+               array('column_name' => 'EBS Snapshot', 'sortable' => false),
+               array('column_name' => 'Method Dataset Name', 'sortable' => false),
+               array('column_name' => 'Dataset Size', 'sortable' => false),
+               array('column_name' => 'Actions')
+            );
+            echo $this->partialLoop('_column_header.phtml', $columns);
+        ?>
+	</tr>
+	</thead>
+	<tfoot>
+        <tr>
+            <th colspan="10">
+                <?php echo $this->paginator ?>
+            </th>
+        </tr>
+        <tr>
+	    <th colspan="10">
+	    <input onmouseover="this.style.backgroundPosition='bottom';" onmouseout="this.style.backgroundPosition='top';"
+            id="button_new_dataset" class="button_105"
+            type="button" value="Add Dataset" onclick="window.location='<?php echo $this->url(array('action' => 'add'))?>'" />
+            </th>
+        </tr>
+	</tfoot>
+
+    <tbody>
+        <?php foreach($this->paginator as $k => $entry): ?>
+        <tr>
+			<td><a href="<?php echo $this->url(array('action' => 'edit', 'id' => $entry['id']))?>"><?php echo $this->escape($entry['description'])?></a></td>
+			<td class="right">
+                <div style="float:right;">
+                    <div style="float:left;align:right;"><?php echo $this->escape($entry['sortOrder'])?></div>
+                    <div style="width:60px;">
+                    <?php if ($this->paginator->getItemCountPerPage() * ($this->paginator->getCurrentPageNumber() - 1) + $k != 0):?>
+                        <a href="<?php echo $this->url(array('action' => 'move-up', 'id' => $entry['id'])); ?>">
+                            <img src="/images/moveup.png" alt="Move Up" />
+                        </a>
+                    <?php endif ?>
+                    
+                    <?php if ($this->paginator->getItemCountPerPage() * ($this->paginator->getCurrentPageNumber() - 1) + $k != $this->paginator->getTotalItemCount() - 1):?>
+                        <a href="<?php echo $this->url(array('action' => 'move-down', 'id' => $entry['id'])); ?>">
+                            <img src="/images/movedown.png" alt="Move Down"/>
+                        </a>
+                    <?php endif ?>
+                    </div>
+                </div>
+            </td>
+			<td><?php if ($entry['defaultFlag']) echo 'Default'?></td>
+			<td><?php if ($entry['storageType']) echo 'S3'; else echo 'EBS';?></td>
+			<td><?php echo $this->escape($entry['s3Bucket'])?></td>
+			<td><?php echo $this->escape($entry['ebsSnapshot'])?></td>
+			<td><?php echo $this->escape($entry['methodDatasetName'])?></td>
+			<td class="right"><?php echo $this->escape($entry['datasetSize'])?></td>
+            <td class="center">
+                <a href="<?php echo $this->url(array('action' => 'delete', 'id' => $entry['id']))?>" onclick="javascript:return confirm('Do you really want delete \'<?php echo $this->escape($entry['description'])?>\'?')" title="Delete Dataset">
+                    <img src="/images/trash.gif"/>
+                </a>
+            </td>
+        </tr>
+		<? endforeach ?>
+	</tbody>
+    </table>
+</div>

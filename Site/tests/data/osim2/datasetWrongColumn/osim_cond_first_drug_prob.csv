@@ -1,0 +1,1 @@
+condition_concept_id,interval_bucket,gender_concept_id,age_bucket,condition_count_bucket,drug_count_bucket,day_cond_count,drug_concept_id,delta_days,accumulated_probability

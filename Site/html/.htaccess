@@ -1,0 +1,13 @@
+<Files ~ "\.(sql|sh)$">
+deny from all
+</Files>
+
+RewriteEngine off 
+RewriteCond %{HTTP_HOST} !^www\.rl\.omop\.dev$ [NC] 
+RewriteRule .? http://www.rl.omop.dev%{REQUEST_URI} [R=301,L]
+RewriteRule ^/?([a-z_]+)/([0-9a-z_]+)/?$ index.php?page=$1&action=$2 [L]
+RewriteRule ^/?([a-z_]+)/?$ index.php?page=$1 [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f  
+RewriteCond %{REQUEST_FILENAME} !-d  
+RewriteRule .? /404.php [L]

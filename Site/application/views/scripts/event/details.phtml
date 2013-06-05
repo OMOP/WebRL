@@ -1,0 +1,46 @@
+<style type="text/css">
+#container form.form2 label {
+    margin-top: 0
+}
+</style>
+<div class="invisible_block">
+        <form class="form2">
+            <div class="list">
+            <fieldset>
+            <?php echo $this->partial('_round_corners.phtml', array('title' => ''))?>
+                <div>
+                    <label>Date:</label>
+                    <?php echo $this->dateFormat($this->escape($this->event->getDate()))?>
+                </div>
+                <div>
+                    <label>Event:</label>
+                    <?php echo $this->escape($this->event->getIssueTypeDescription())?>
+                </div>
+                <div>
+                    <label>User:</label>
+                    <a href="/index.php?page=edit_user&action=<?php echo $this->event->getUserId()?>"><?php echo $this->escape($this->event->getUserLoginId())?></a>&nbsp;
+                </div>
+                <div>
+                    <label>Remote IP:</label>
+                    <?php echo $this->escape($this->event->getRemoteIp())?>
+                </div>
+                <div>
+                    <label>Instance:</label>
+                    <?php echo $this->escape($this->event->getInstanceName())?>&nbsp;
+                </div>
+                <div style="width:700px">
+                    <label>Description:</label>
+                    <textarea readonly="readonly" style="width:500px"><?php echo $this->escape($this->event->getMessage())?></textarea>
+                </div>
+        	    <div>
+                    <label><input onmouseover="this.style.backgroundPosition='bottom';"
+                        onmouseout="this.style.backgroundPosition='top';"
+                        onclick="window.location='<?php echo $this->referer?>';"
+                        type="button" id="button_back" class="button_90" value="Back" />
+                    </label>
+                </div>
+                
+        </fieldset>
+        </div>
+        </form>
+</div>

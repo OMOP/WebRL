@@ -1,0 +1,112 @@
+<?php $this->headScript()->appendFile('/js/user_history.js')?>
+<?php $this->headScript()->captureStart()?>
+$(document).ready(function () {
+    $('.form4').submit(function () {
+        window.location = "<?php echo $this->url(array('controller' => 'user', 'action' => 'history'), 'default', true)?>" + '/filter/' + $('#idOrganization').val()+'_'+$('#idUser').val()+'_'+$('.form4 input[name="status"]:checked').val();
+        return false;
+    });
+});
+<?php $this->headScript()->captureEnd()?>
+<div class="clear"></div>
+<div class="list">
+    <?php echo $this->partial('_round_corners.phtml')?>
+<form action="<?php echo $this->url(array('controller' => 'user', 'action' => 'history'), 'default', true)?>" method="POST" class="form4">
+    <fieldset>
+        
+        <div><label for="idStatus">Status:</label>
+            <p><input type="radio" name="status" value="A" class="radio" <?php if ($this->status == "A") echo 'checked="checked"'?>/>Running</p>
+            <p><input type="radio" name="status" value="P" class="radio" <?php if ($this->status == "P") echo 'checked="checked"' ?>/>Paused</p>
+            <p><input type="radio" name="status" value="S" class="radio" <?php if ($this->status == "S") echo 'checked="checked"'?>/>Terminated</p>
+            <p><input type="radio" name="status" value=""  class="radio" <?php if ($this->status == "") echo 'checked="checked"'?>/>All</p>
+        </div>
+<?php if ($current_user->organization_id == 0):?>
+        <div>
+            <label for="idOrganization">Organization:</label>
+            <select id="idOrganization" name="organization" style="max-width:150px">
+            	<option value="0">--All--</value>
+                <?php foreach($this->organizations as $o): ?>
+                    <option value="<?php echo $o->organization_id?>" <?php if ($this->organizationId == $o->organization_id) echo 'selected="selected"'?>><?php echo $o->organization_name ?></option>
+                <?php endforeach?>
+            </select>
+<?php endif?>
+        </div>
+        <div><label for="idUser">User:</label>
+            <select id="idUser" name="user" style="max-width:250px">
+            	<option value="0">--All--</value>
+                <?php foreach($this->users as $u): ?>
+                    <option value="<?php echo $u->user_id?>" <?php if ($this->userId == $u->user_id) echo 'selected="selected"' ?>><?php echo "{$u->last_name}, {$u->first_name} ({$u->login_id})"?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+&nbsp;
+&nbsp;
+&nbsp;
+        <input onmouseover="this.style.backgroundPosition='bottom';" 
+                    onmouseout="this.style.backgroundPosition='top';" 
+                    id="button_filter" class="button_80"
+                    type="submit" value="Filter" 
+                    />
+        
+    </fieldset>
+</form>
+    <table cellspacing="0" cellpadding="0" border="0">
+	<thead>
+	<tr>
+        <?php
+            $columns = array(
+               array('column_name' => 'Start Date'),
+               array('column_name' => 'Terminate Date'),
+               array('column_name' => 'User ID'),
+               array('column_name' => 'Instance Name'),
+               array('column_name' => 'Instance Type'),
+               array('column_name' => 'Status'),
+               array('column_name' => 'Dataset'),
+               array('column_name' => 'Image'),
+               array('column_name' => 'Charged ($)'),
+            );
+            echo $this->partialLoop('_column_header.phtml', $columns);
+        ?>
+	</tr>
+	</thead>
+	<tfoot>
+        <tr>
+            <th colspan="9">
+                <?php echo $this->paginator ?>
+            </th>
+        </tr>
+	</tfoot>
+
+    <tbody>
+        <?php foreach($this->paginator as $entry): ?>
+        <tr>
+            <td><?php echo $this->dateFormat($this->escape($entry['startDate']));?></td>
+            <td><?php echo $this->dateFormat($this->escape($entry['terminateDate']));?></td>
+            <td><a href="<?php echo $this->url(array('action' => 'edit', 'id' => $entry['id']))?>"><?php echo $this->escape($entry['login']);?></a></td>
+            <td><a class="tooltip_handle" href="#" onlcik="return false;">
+                 <?php echo $this->truncate($this->escape($entry['instanceName']), 80);?>
+                <span class="tooltip">
+                 <?php echo $this->escape($entry['instanceName']);?><br />
+                 <nobr><?php echo $this->escape($entry['instanceHost']);?></nobr>
+                </span>
+            <td><a class="tooltip_handle" href="#" onclick="return false;">
+                <?php echo $this->truncate($this->escape($entry['instanceType']), 25);?>
+                <span class="tooltip">
+                <?php echo $this->escape($entry['instanceType']);?>
+                </span>
+                </a>
+            </td>
+            <td><?php if ($entry['status'] == 'A') echo "Running"; elseif ($entry['status'] == 'S') echo "Terminated"; elseif ($entry['status'] == 'F') echo "Failed"; elseif ($entry["status"] == 'P') echo "Paused"; else echo "Unknown";?></td>
+            <td><a class="tooltip_handle" href="#" onclick="return false;">
+                <?php echo $this->truncate($this->escape($entry['dataset']), 12);?>
+                <span class="tooltip">
+                    <?php echo $this->escape($entry['dataset']);?>
+                </span>
+                </a>
+            </td>
+            <td><?php echo $this->escape($entry['image']);?></td>
+            <td class="right"><?php echo number_format($this->escape($entry['charged']));?></td>
+        </tr>
+		<? endforeach ?>
+	</tbody>
+    </table>
+</div>

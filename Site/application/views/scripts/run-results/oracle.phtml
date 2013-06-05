@@ -1,0 +1,131 @@
+<?php
+/*================================================================================
+    OMOP - Cloud Research Lab
+
+    Observational Medical Outcomes Partnership
+    15 December 2009
+
+    Contains view template for displaying the Run Results uploaded to Oracle
+    databse.
+
+    �2009 Foundation for the National Institutes of Health (FNIH)
+
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not
+    use this file except in compliance with the License. You may obtain a copy
+    of the License at http://omop.fnih.org/publiclicense.
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. Any
+    redistributions of this work or any derivative work or modification based on
+    this work should be accompanied by the following source attribution: "This
+    work is based on work by the Observational Medical Outcomes Partnership
+    (OMOP) and used under license from the FNIH at
+    http://omop.fnih.org/publiclicense.
+
+    Any scientific publication that is based on this work should include a
+    reference to http://omop.fnih.org.
+
+================================================================================*/
+?>
+<?php $this->headLink()->appendStylesheet('/css/jquery/smoothness/jquery-ui-1.7.3.custom.css')?>
+<?php echo $this->partial('_javascript_autoload.phtml', array('page' => 'result_oracle'))?>
+<?php $this->headScript()->appendFile('/js/jquery-ui-1.7.3.custom.min.js')?>
+
+<div class="clear"></div>
+<div class="list">
+    <?php echo $this->partial('_round_corners.phtml')?>
+    <div style="padding-left:15px;padding-top:20px;">
+        <label for="idExperiment">Select Experiment:</label>
+        <?php if(count($this->experimentTypes)): ?>
+        <select id="idExperiment" name="experiment" onchange="window.location = '<?php echo $this->baseUrl();?>/run.results/oracle/exp/' + $(this).val()">
+            <option value="0" selected="selected">--Not selected--</option>
+            <?php foreach($this->experimentTypes as $id => $experimentType): ?>
+            <option value="<?=$id?>" <?php echo $id == $this->experiment ? 'selected="selected"' : ''; ?>><?=$experimentType?></option>
+            <?php endforeach; ?>
+        </select>
+        <?php else: ?>
+        <p><em>There are no available experiments.</em></p>
+        <?php endif;?>
+    </div>
+    <table cellspacing="0" cellpadding="0" border="0" id="S3-results-table">
+        <thead>
+        <tr>
+            <th>
+                Datasets
+            </th>
+            <th colspan="<?php echo sizeof($this->results) ?>" style="text-align: center">
+                Methods
+            </th>
+        </tr>
+        <tr>
+            <th>&nbsp;</th>
+            <?php foreach($this->results as $methodName => $method): ?>
+            <th><?=$methodName?></th>
+            <?php endforeach ?>
+        </tr>
+        </thead>
+
+        <tbody>
+        <?php 
+        foreach($this->sources as $dataset){
+        	
+        	if(is_string($dataset)){
+           		 	$datasetName = $dataset;
+           		 }else{
+           		 	$datasetName = $dataset['SOURCE_ABBR'];
+           		 }
+           		 
+           		 
+        /*    foreach($this->datasetTypes as $dataset){
+            $datasetName = $dataset;*/
+        ?>
+        
+            <tr>
+                <td><strong><?=$datasetName?></strong></td>
+                <?php 
+                if ($this->experiment != '')://choosen experiment
+                    foreach($this->results as $methodName => $method): 
+                    ?>
+                    
+                    <?php        
+                    $datasetData = $method[$datasetName];
+                    if ('OSCAR' == $methodName) {
+                        $cssClass = '';
+                        $title = 'title="' . $datasetName . '/' . $methodName . '"';
+                    } elseif ($method[$datasetName]['ADD_DATE']) {
+                        $cssClass = 'class="run-data' . (!$method[$datasetName]['load_complete']?' red' : '') . '"';
+                        $title = 'title="' . $datasetName . '/' . $methodName . '"';
+                    } else {
+                        $cssClass = $title = '';
+                    }
+                    ?>
+                    <td <?=$cssClass . ' ' . $title?>><?=htmlspecialchars($this->dateFormat($datasetData['ADD_DATE']))?></td>
+                <?php 
+                    endforeach;
+                else:
+                ?>
+                    <td colspan="<?php echo sizeof($this->results);?>">&nbsp;</td>
+                <?php
+                endif;
+                ?>
+            </tr>
+        <?php } ?>
+
+        </tbody>
+    </table>
+</div>
+
+<style type="text/css">
+#run-details table thead th {
+    text-align: left; padding-left: 10px; font-size: 12px; color: #fff; background: url(/images/top_line.gif) repeat-x; line-height: 15px; border-left: 2px solid white;
+}
+#run-details table tr > td:first {
+    text-align: right;
+}
+</style>
+
+<div id="runs-list" style="display: none;" title="Runs"></div>
+<div id="run-details" style="display: none;" title="Run Details"></div>
+
+<div id="data-buffer" data=""></div><?php
